@@ -1,31 +1,39 @@
-#include <iostream>
-#include <string>
-#include <iomanip>
-#include <limits>
+#include "PhoneBook.hpp"
 
-class Contact {
-	public:
-		int			index = -1;
-		std::string firstName;
-		std::string lastName;
-		std::string nickname;
-		std::string number;
-		std::string secret;
-};
+PhoneBook::PhoneBook()
+{
+}
 
-class PhoneBook {
-	private:
-	Contact	contact[8];
-	public:
-	int		contactnbr = 0;
-	void	addContact(int i);
-	void	searchContact(void);
-};
+PhoneBook::~PhoneBook()
+{
+}
 
+void PhoneBook::phonebookInit(void)
+{
+	int i = 0;
+	while (i < 9) {
+		this->contact[i].index = -1;
+		i++;
+	}
+	this->contactnbr = 0;
+}
+
+void PhoneBook::clearContact(int i)
+{
+	this->contact[i].firstName.clear();
+	this->contact[i].lastName.clear();
+	this->contact[i].nickname.clear();
+	this->contact[i].number.clear();
+	this->contact[i].secret.clear();
+}
 
 void PhoneBook::addContact(int i)
 {
-	this->contact[i].index = i;
+	if (i >= 8) {
+		i = i % 8;
+		PhoneBook::clearContact(i);
+	}
+	this->contact[i].index = i + 1;
 	while (this->contact[i].firstName.empty()) {
 		std::cout << "Contact first name ?\n";
 		std::getline(std::cin, this->contact[i].firstName);
@@ -54,10 +62,10 @@ void PhoneBook::addContact(int i)
 void PhoneBook::searchContact(void)
 {
 	int	i = 0;
-	char search;
+	std::string search;
 	int searchIndex;
 
-	while (this->contact[i].index != -1) {
+	while (this->contact[i].index != -1 && i < 8) {
 		std::cout << std::right << std::setw(10) << this->contact[i].index;
 		std::cout << "|";
 		if (this->contact[i].firstName.length() > 10) {
@@ -86,52 +94,21 @@ void PhoneBook::searchContact(void)
 	i = 0;
 	if (this->contactnbr != 0) {
 		std::cout << "Which contact to display ?\n";
-		std::cin >> search;
-		searchIndex = search - '0';
-		while (searchIndex < 0 || searchIndex > this->contactnbr) {
+		std::getline(std::cin, search);
+		searchIndex = search[0] - '0';
+		while (searchIndex < 1 || searchIndex > this->contactnbr || search.size() > 1) {
 			std::cout << "Incorrect contact index, which contact to display ?\n";
-			std::cin >> search;
-			searchIndex = search - '0';
+			std::getline(std::cin, search);
+			searchIndex = search[0] - '0';
 		}
-		std::cout << "index : " << this->contact[searchIndex].index << std::endl;
-		std::cout << "first name : " << this->contact[searchIndex].firstName << std::endl;
-		std::cout << "last name : " << this->contact[searchIndex].lastName << std::endl;
-		std::cout << "nickname : " << this->contact[searchIndex].nickname << std::endl;
-		std::cout << "number : " << this->contact[searchIndex].number << std::endl;
-		std::cout << "secret : " << this->contact[searchIndex].secret << std::endl;
+		std::cout << "index : " << this->contact[searchIndex - 1].index << std::endl;
+		std::cout << "first name : " << this->contact[searchIndex - 1].firstName << std::endl;
+		std::cout << "last name : " << this->contact[searchIndex - 1].lastName << std::endl;
+		std::cout << "nickname : " << this->contact[searchIndex - 1].nickname << std::endl;
+		std::cout << "number : " << this->contact[searchIndex - 1].number << std::endl;
+		std::cout << "secret : " << this->contact[searchIndex - 1].secret << std::endl;
 	}
 	else {
-		std::cout << "No contact in contact list\n";
+		std::cout << "No contact in PhoneBook\n";
 	}
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
-int main() {
-	int exit = 0;
-	int	i = 0;
-	std::string command;
-	PhoneBook PhoneBook;
-
-	while (exit == 0) {
-	std::cout << "Enter command : ADD, SEARCH or EXIT\n";
-	std::getline(std::cin, command);
-	if (command == "ADD") {
-		PhoneBook.addContact(i);
-		i++;
-		if (i == 8) {
-			i = 1;
-		}
-	}
-	else if (command == "SEARCH") {
-		PhoneBook.searchContact();
-	}
-	else if (command == "EXIT") {
-		exit = 1;
-	}
-	else {
-		std::cout << "Wrong command, possible commands are ADD, SEARCH or EXIT\n";
-	}
-	command.clear();
-	}
-	return (0);
 }
