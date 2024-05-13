@@ -69,21 +69,21 @@ void PhoneBook::searchContact(void)
 		std::cout << std::right << std::setw(10) << this->contact[i].index;
 		std::cout << "|";
 		if (this->contact[i].firstName.length() > 10) {
-			std::cout << std::right << std::setw(10) << this->contact[i].firstName.substr(0, 9) << ".";
+			std::cout << std::right << std::setw(9) << this->contact[i].firstName.substr(0, 9) << ".";
 		}
 		else {
 			std::cout << std::right << std::setw(10) << this->contact[i].firstName;
 		}
 		std::cout << "|";
 		if (this->contact[i].lastName.length() > 10) {
-			std::cout << std::right << std::setw(10) << this->contact[i].lastName.substr(0, 9) << ".";
+			std::cout << std::right << std::setw(9) << this->contact[i].lastName.substr(0, 9) << ".";
 		}
 		else {
 			std::cout << std::right << std::setw(10) << this->contact[i].lastName;
 		}
 		std::cout << "|";
 		if (this->contact[i].nickname.length() > 10) {
-			std::cout << std::right << std::setw(10) << this->contact[i].nickname.substr(0, 9) << ".";
+			std::cout << std::right << std::setw(9) << this->contact[i].nickname.substr(0, 9) << ".";
 		}
 		else {
 			std::cout << std::right << std::setw(10) << this->contact[i].nickname;

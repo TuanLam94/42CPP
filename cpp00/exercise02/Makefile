@@ -1,4 +1,4 @@
-NAME = DreamJob
+NAME = dreamjob
 
 CC = c++ -std=c++98
 

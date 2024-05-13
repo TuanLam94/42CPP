@@ -1,22 +1,22 @@
 NAME = megaphone
 
-SRC = exercise00.cpp
-
-OBJ = $(SRC:.cpp=.o)
-
-CC = c++
+CC = c++ -std=c++98
 
 CFLAGS = -Wall -Wextra -Werror
 
-RM = rm -f
+SRC = megaphone.cpp
+
+OBJ = $(SRC:.cpp=.o)
+
+RM = rm -rf
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
-
-.cpp.o :
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 all : $(NAME)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	$(RM) $(OBJ)

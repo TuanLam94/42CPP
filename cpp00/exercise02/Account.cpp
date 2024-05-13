@@ -12,9 +12,9 @@ void Account::_displayTimestamp()
 {
 	char timeStamp[20];
 
-	std::time_t now = std::time(NULL);
-	std::tm time = *std::localtime(&now);
-	std::strftime(timeStamp, sizeof(time), "[%Y%m%d_%H%M%S]", &time);
+	std::time_t epochtime = std::time(NULL);
+	std::tm localtime = *std::localtime(&epochtime);
+	std::strftime(timeStamp, sizeof(localtime), "[%Y%m%d_%H%M%S]", &localtime);
 
 	std::cout << timeStamp;
 }
