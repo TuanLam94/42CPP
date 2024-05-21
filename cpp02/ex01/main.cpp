@@ -1,7 +1,5 @@
 #include "Fixed.hpp"
 
-//NOT REALLY DONE
-
 int main( void ) {
 	Fixed a;
 	Fixed const b( 10 );
