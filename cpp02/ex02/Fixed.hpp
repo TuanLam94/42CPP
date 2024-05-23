@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cmath>
 
+//FIX FROM EX03
+
 class Fixed {
 	private:
 		int _value;

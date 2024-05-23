@@ -1,116 +1,84 @@
 #include "Fixed.hpp"
 
-Fixed::Fixed() : _value(0)
-{
-	std::cout << "Default constructor called\n";
-}
+Fixed::Fixed() : _value(0) {}
 
 Fixed::Fixed(const int num)
 {
-	std::cout << "Int constructor called\n";
 	_value = num << _fract_bits;
 }
 
 Fixed::Fixed(const float num)
 {
-	std::cout << "Float constructor called\n";
-	_value = static_cast<int>(num * (1 << _fract_bits));
+	_value = static_cast<int>(roundf(num * (1 << _fract_bits)));
 }
 
-Fixed::Fixed(const Fixed& copy)
-{
-	*this = copy;
-	std::cout << "Copy constructor called\n";
-}
+Fixed::Fixed(const Fixed& copy) : _value(copy._value) {}
 
 Fixed &Fixed::operator = (const Fixed& src)
 {
-	// if (this != &src)
-	// 	this->_value = src.getRawBits();
 	if (this != &src)
-		this->_value = src._value;
-	std::cout << "Copy assignment operator called\n";
+		_value = src._value;
 	return *this;
 }
 
 bool Fixed::operator > (const Fixed& src) const
 {
-	std::cout << "> operator called\n";
 	return (this->_value > src._value);
 }
 
 bool Fixed::operator < (const Fixed& src) const
 {
-	std::cout << "< operator called\n";
 	return (this->_value < src._value);
 }
 
 bool Fixed::operator >= (const Fixed& src) const
 {
-	std::cout << ">= operator called\n";
 	return (this->_value >= src._value);
 }
 
 bool Fixed::operator <= (const Fixed& src) const
 {
-	std::cout << "<= operator called\n";
 	return (this->_value <= src._value);
 }
 
 bool Fixed::operator == (const Fixed& src) const
 {
-	std::cout << "== operator called\n";
 	return (this->_value == src._value);
 }
 
 bool Fixed::operator != (const Fixed& src) const
 {
-	std::cout << "!= operator called\n";
-	return (this->_value != src._value);
+	return !(*this == src);
 }
 
 Fixed Fixed::operator + (const Fixed& src) const
 {
-	std::cout << "+ operator called\n";
-	Fixed result;
-	result._value = this->_value + src._value;
-	return result;
+    return Fixed(this->toFloat() + src.toFloat());
 }
 
 Fixed Fixed::operator - (const Fixed& src) const
 {
-	std::cout << "- operator called\n";
-	Fixed result;
-	result._value = this->_value - src._value;
-	return result;
+    return Fixed(this->toFloat() - src.toFloat());
 }
 
 Fixed Fixed::operator * (const Fixed& src) const
 {
-	std::cout << "* operator called\n";
-	Fixed result;
-	result._value = (this->_value * src._value) >> _fract_bits;
-	return result;
+    return Fixed(this->toFloat() * src.toFloat());
 }
 
 Fixed Fixed::operator / (const Fixed& src) const
 {
-	std::cout << "/ operator called\n";
-	Fixed result;
-	result._value = (this->_value << _fract_bits) / src._value;
-	return result;
+    return Fixed(this->toFloat() / src.toFloat());
 }
 
 Fixed Fixed::operator ++()
 {
-	std::cout << "pre++ operator called\n";
 	this->_value += 1;
 	return (*this);
 }
 
 Fixed Fixed::operator ++(int)
 {
-	std::cout << "post++ operator called\n";
 	Fixed temp = *this;
 	this->_value += 1;
 	return (temp);
@@ -118,14 +86,12 @@ Fixed Fixed::operator ++(int)
 
 Fixed Fixed::operator --()
 {
-	std::cout << "pre-- operator called\n";
 	this->_value -= 1;
 	return (*this);
 }
 
 Fixed Fixed::operator --(int)
 {
-	std::cout << "post-- operator called\n";
 	Fixed temp = *this;
 	this->_value -= 1;
 	return (temp);
@@ -153,14 +119,12 @@ const Fixed& Fixed::max(const Fixed& first, const Fixed& second)
 
 int Fixed::getRawBits(void) const
 {
-	std::cout << "getRawBits member function called\n";
 	return (this->_value);
 }
 
 void Fixed::setRawBits(int const raw)
 {
 	this->_value = raw;
-	std::cout << "setRawBits member function called\n";
 }
 
 float Fixed::toFloat(void) const
@@ -175,7 +139,6 @@ int Fixed::toInt(void) const
 
 Fixed::~Fixed()
 {
-	std::cout << "Destructor called\n";
 }
 
 std::ostream& operator << (std::ostream& os, const Fixed& fixed) {

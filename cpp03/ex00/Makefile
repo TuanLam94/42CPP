@@ -1,13 +1,11 @@
-NAME = bsp
+NAME = ex00
 
 CC = c++ -std=c++98
 
 CFLAGS = -Wall -Werror -Wextra
 
 SRC = main.cpp \
-		Fixed.cpp \
-		Point.cpp \
-		bsp.cpp \
+		ClapTrap.cpp \
 		
 OBJ = $(SRC:.cpp=.o)
 
