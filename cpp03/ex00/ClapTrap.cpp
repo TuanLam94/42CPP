@@ -18,7 +18,7 @@ ClapTrap::ClapTrap(const ClapTrap& copy)
 
 ClapTrap &ClapTrap::operator = (const ClapTrap& other)
 {
-	std::cout << "Overload operator called\n";
+	std::cout << "Assignment operator called\n";
 	if (this != &other) {
 		_name = other._name;
 		_hp = other._hp;

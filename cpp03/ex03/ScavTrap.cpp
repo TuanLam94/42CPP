@@ -12,7 +12,7 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
 	_hp = 100;
 	_ep = 50;
-	_ad = 20;
+	_ad = 30;
 	std::cout << "ScavTrap string constructor called\n";
 }
 

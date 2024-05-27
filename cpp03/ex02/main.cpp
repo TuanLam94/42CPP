@@ -1,5 +1,6 @@
 #include "ClapTrap.hpp"
 #include "ScavTrap.hpp"
+#include "FragTrap.hpp"
 
 int main ()
 {
@@ -43,6 +44,27 @@ int main ()
 	Quinn.beRepaired(10);
 	Quinn.takeDamage(70);
 	Quinn.beRepaired(10);
+
+	std::cout << "======= FRAGTRAP TESTS========\n";
+
+	FragTrap JA("JA");
+	FragTrap Matt = JA;
+
+	for (int i = 0; i < 11; i++) {
+		JA.attack("Depardieu");
+	}
+
+	std::cout << "JA highfives : ";
+	JA.highFivesGuys();
+	std::cout << std::endl;
+	std::cout << "Matt highfives : ";
+	Matt.highFivesGuys();
+	std::cout << std::endl;
+
+	JA.takeDamage(50);
+	JA.beRepaired(10);
+	JA.takeDamage(70);
+	JA.beRepaired(10);
 
 	return (0);
 }
