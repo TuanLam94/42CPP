@@ -16,30 +16,30 @@ Character::Character(std::string name)
     }
 }
 
-Character::Character(const ICharacter& copy)
+Character::Character(const Character& copy)
 {
-    delete _name;
-    for (int i = 0; i < 4; i++) {
-        delete _inventory[i];
-    }
+    // delete _name;
+    // for (int i = 0; i < 4; i++) {
+    //     delete _inventory[i];
+    // }
     _name = new std::string(copy.getName());
     for (int i = 0; i < 4; i++) {
         if (copy._inventory[i]) {
-            _inventory[i] = copy._inventory[i].clone();
+            _inventory[i] = copy._inventory[i]->clone();
         } else {
             _inventory[i] = NULL;
         }
     }
 }
 
-Character &Character::operator = (const ICharacter& other)
+Character &Character::operator = (const Character& other)
 {
     if (this != &other) {
         delete _name;
         _name = new std::string (other.getName());
         for (int i = 0; i < 4; i++) {
             if (other._inventory[i]) {
-                _inventory[i] = other._inventory[i].clone();
+                _inventory[i] = other._inventory[i]->clone();
             } else {
                 _inventory[i] = NULL;
             }
@@ -61,11 +61,6 @@ std::string const& Character::getName() const
     return *_name;
 }
 
-AMateria& Character::getInventory() 
-{
-
-}
-
 void Character::equip(AMateria* m)
 {
     int i = 0;
@@ -81,7 +76,7 @@ void Character::unequip(int i) //leaks ?
         _inventory[i] = NULL;
 }
 
-void use(int i, ICharacter& target) 
+void Character::use(int i, ICharacter& target) 
 {
     if (i >= 0 && i < 4)
         _inventory[i]->use(target);

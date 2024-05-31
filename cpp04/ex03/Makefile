@@ -5,6 +5,13 @@ CC = c++ -std=c++98
 CFLAGS = -Wall -Werror -Wextra
 
 SRC = main.cpp \
+		AMateria.cpp \
+		Character.cpp \
+		ICharacter.cpp \
+		Ice.cpp \
+		Cure.cpp \
+		IMateriaSource.cpp \
+		MateriaSource.cpp \
 		
 		
 OBJ = $(SRC:.cpp=.o)

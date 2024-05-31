@@ -3,21 +3,22 @@
 
 #include "ICharacter.hpp"
 
+class AMateria;
+
 class Character : public ICharacter
 {
     protected :
         AMateria* _inventory[4];
     public :
         Character();
-        Character(const ICharacter& copy);
-        Character &operator = (const ICharacter& other);
+        Character(const Character& copy);
+        Character &operator = (const Character& other);
         ~Character();
         Character(std::string name);
-        virtual std::string const& getName() const;
-        virtual AMateria& getInventorySlot() const = 0;
-        virtual void equip(AMateria* m);
-        virtual void unequip(int i);
-        virtual void use(int i, ICharacter& target);
+        std::string const& getName() const;
+        void equip(AMateria* m);
+        void unequip(int i);
+        void use(int i, ICharacter& target);
 };
 
 #endif
