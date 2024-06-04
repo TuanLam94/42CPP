@@ -7,29 +7,27 @@
 Dog::Dog() : Animal("Dog")
 {
     std::cout << "Dog constructor called\n";
-    _type = "Dog";
     _Brain = new Brain();
 }
 
 Dog::Dog(std::string type) : Animal(type)
 {
     std::cout << "Dog string constructor called\n";
-    _type = type;
     _Brain = new Brain();
 }
 
-Dog::Dog(const Dog& copy)
+Dog::Dog(const Dog& copy) : Animal(copy), _Brain(new Brain(*copy._Brain))
 {
     std::cout << "Dog copy constructor called\n";
-    *this = copy;
 }
 
 Dog &Dog::operator = (const Dog& other)
 {
     std::cout << "Dog assignment operator called\n";
     if (this != &other) {
-        _type = other._type;
-        _Brain = other._Brain;
+        Animal::operator=(other);
+        delete _Brain;
+        _Brain = new Brain (*other._Brain);
     }
     return *this;
 }

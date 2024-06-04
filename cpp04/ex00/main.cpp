@@ -56,6 +56,11 @@ int main()
     atem->makeSound();
     tema->makeSound();
 
+    delete atem;
+    delete tema;
+    delete meta;
+    delete i;
+    delete j;
 
     std::cout << "\n\n ==== TESTS END ====\n\n";
 

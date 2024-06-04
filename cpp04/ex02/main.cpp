@@ -4,8 +4,6 @@
 #include "WrongCat.hpp"
 #include "WrongAnimal.hpp"
 
-////VALGRIND TO CHECK
-
 int main()
 {
 
@@ -41,7 +39,7 @@ int main()
 
     const Animal* j = new Dog();
     const Animal* i = new Cat();
-    delete j;//should not create a leak
+    delete j;
     delete i;
 
     std::cout << "\n\n ==== TESTS END ====\n\n";

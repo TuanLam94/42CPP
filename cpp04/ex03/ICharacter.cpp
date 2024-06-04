@@ -2,7 +2,7 @@
 
 ICharacter::ICharacter()
 {
-    _name = new std::string("");
+    _name = new std::string("Default");
     // for (int i = 0; i < 4; i++) {
     //     _inventory[i] = NULL;
     // }
@@ -18,11 +18,11 @@ ICharacter::ICharacter(std::string name)
 
 ICharacter::ICharacter(const ICharacter& copy)
 {
-    delete _name;
+    // delete _name;
     // for (int i = 0; i < 4; i++) {
     //     delete _inventory[i];
     // }
-    _name = new std::string(*copy._name);
+    _name = new std::string(*(copy._name));
     // for (int i = 0; i < 4; i++) {
     //     if (copy._inventory[i]) {
     //         _inventory[i] = copy._inventory[i].clone();
@@ -36,7 +36,7 @@ ICharacter &ICharacter::operator = (const ICharacter& other)
 {
     if (this != &other) {
         delete _name;
-        _name = new std::string (*other._name);
+        _name = new std::string (*(other._name));
         // for (int i = 0; i < 4; i++) {
         //     if (other._inventory[i]) {
         //         _inventory[i] = other._inventory[i].clone();

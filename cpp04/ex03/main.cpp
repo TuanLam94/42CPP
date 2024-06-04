@@ -37,6 +37,8 @@ int main()
     tmp = src->createMateria("cure");
     me->equip(tmp);
 
+    me->unequip(1);
+
     ICharacter* bob = new Character("bob");
     
     me->use(0, *bob);
@@ -45,6 +47,17 @@ int main()
     delete bob;
     delete me;
     delete src;
+
+    std::cout << "\n\n====FURTHER TESTING====\n\n";
+
+    Character one;
+
+    Character two(one);
+
+    Character three = two;
+
+    std::cout << "name : " << two.getName() << std::endl;
+
 
     std::cout << "\n\n====TESTS END====\n\n";
 

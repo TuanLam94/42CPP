@@ -6,8 +6,6 @@
 #include "ICharacter.hpp"
 #include "AMateria.hpp"
 
-//Enlever les constructeurs et toute l'implementation car classe abstraite ? 
-
 class IMateriaSource
 {
     public:

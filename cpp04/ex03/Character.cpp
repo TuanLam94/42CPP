@@ -1,28 +1,31 @@
 #include "Character.hpp"
 
-Character::Character()
+Character::Character() : ICharacter()
 {
-    _name = new std::string("");
     for (int i = 0; i < 4; i++) {
         _inventory[i] = NULL;
     }
 }
 
-Character::Character(std::string name)
+Character::Character(std::string name) : ICharacter(name)
 {
-    _name = new std::string(name);
     for (int i = 0; i < 4; i++) {
         _inventory[i] = NULL;
     }
 }
 
-Character::Character(const Character& copy)
+Character::Character(const Character& copy) : ICharacter(copy)
 {
-    // delete _name;
     // for (int i = 0; i < 4; i++) {
     //     delete _inventory[i];
     // }
-    _name = new std::string(copy.getName());
+    // for (int i = 0; i < 4; i++) {
+    //     if (copy._inventory[i]) {
+    //         _inventory[i] = copy._inventory[i]->clone();
+    //     } else {
+    //         _inventory[i] = NULL;
+    //     }
+    // }
     for (int i = 0; i < 4; i++) {
         if (copy._inventory[i]) {
             _inventory[i] = copy._inventory[i]->clone();
@@ -32,12 +35,12 @@ Character::Character(const Character& copy)
     }
 }
 
-Character &Character::operator = (const Character& other)
+Character &Character::operator = (const Character& other) 
 {
     if (this != &other) {
-        delete _name;
-        _name = new std::string (other.getName());
+        ICharacter::operator=(other);
         for (int i = 0; i < 4; i++) {
+            delete _inventory[i];
             if (other._inventory[i]) {
                 _inventory[i] = other._inventory[i]->clone();
             } else {
@@ -48,12 +51,11 @@ Character &Character::operator = (const Character& other)
     return (*this);
 }
 
-Character::~Character()
+Character::~Character()     //why ? Try / catch
 {
-    delete _name;
-    for (int i = 0; i < 4; i++) {
-        delete _inventory[i];
-    }
+    // for (int i = 0; i < 4; i++) {
+    //     delete _inventory[i];
+    // }
 }
 
 std::string const& Character::getName() const
@@ -67,7 +69,10 @@ void Character::equip(AMateria* m)
     while (_inventory[i]) {
         i++;
     }
-    _inventory[i] = m;
+    if (i < 4)
+        _inventory[i] = m;
+    else
+        std::cout << "Inventory full !\n";
 }
 
 void Character::unequip(int i) //leaks ? 
@@ -76,8 +81,10 @@ void Character::unequip(int i) //leaks ?
         _inventory[i] = NULL;
 }
 
-void Character::use(int i, ICharacter& target) 
+void Character::use(int i, ICharacter& target)
 {
-    if (i >= 0 && i < 4)
+    if (i >= 0 && i < 4 && _inventory[i])
         _inventory[i]->use(target);
+    else
+        std::cout << "Can't use Materia\n";
 }

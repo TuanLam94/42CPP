@@ -6,13 +6,10 @@
 
 class AMateria;
 
-//Enlever les constructeurs et toute l'implementation car classe abstraite ? 
-
 class ICharacter
 {
     protected:
         std::string* _name;
-        // AMateria* _inventory[4];
     public:
         ICharacter(std::string name);
         ICharacter();
