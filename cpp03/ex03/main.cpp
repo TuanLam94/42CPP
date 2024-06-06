@@ -5,7 +5,7 @@
 
 int main ()
 {
-	std::cout << "====== CLAPTRAP TESTS ========\n" << std::endl;
+	std::cout << "\n\n====== CLAPTRAP TESTS ========\n\n" << std::endl;
 
 	ClapTrap Jones;
 	ClapTrap John("John");
@@ -85,7 +85,7 @@ int main ()
 
 	DiamondTrap Leon("Leon");
 
-	std::cout << "---Assignment operator---\n";
+	std::cout << "\n\n---Assignment operator---\n\n";
 	DiamondTrap Chatou = Leon;
 
 	for (int i = 0; i < 5; i++) {
@@ -105,11 +105,11 @@ int main ()
 	Leon.takeDamage(70);
 	Leon.beRepaired(10);
 
-	std::cout << "-------Checking if ClapTrap subobject is created only once-------\n";
+	std::cout << "\n\n-------Checking if ClapTrap subobject is created only once-------\n\n";
 
 	DiamondTrap Jackie;
 
-	std::cout << "------Check end-----\n";
+	std::cout << "\n\n------Check end-----\n\n";
 
 	return (0);
 }

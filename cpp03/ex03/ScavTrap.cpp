@@ -1,6 +1,6 @@
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap() 
+ScavTrap::ScavTrap() : ClapTrap()
 {
 	_hp = 100;
 	_ep = 50;
@@ -16,7 +16,7 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 	std::cout << "ScavTrap string constructor called\n";
 }
 
-ScavTrap::ScavTrap(const ScavTrap& copy)
+ScavTrap::ScavTrap(const ScavTrap& copy) : ClapTrap(copy)
 {
 	*this = copy;
 	std::cout << "ScavTrap copy constructor called\n";
@@ -25,6 +25,7 @@ ScavTrap::ScavTrap(const ScavTrap& copy)
 ScavTrap &ScavTrap::operator = (const ScavTrap& other)
 {
 	if (this != &other) {
+		ClapTrap::operator=(other);
 		_name = other._name;
 		_hp = other._hp;
 		_ep = other._ep;

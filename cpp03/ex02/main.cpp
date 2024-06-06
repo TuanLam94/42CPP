@@ -4,6 +4,9 @@
 
 int main ()
 {
+
+	std::cout << "\n\n====TESTS BEGIN====\n\n";
+
 	ClapTrap Jones;
 	ClapTrap John("John");
 
@@ -24,7 +27,7 @@ int main ()
 	John.beRepaired(3);
 	John.takeDamage(2);
 
-	std::cout << "======= SCAVTRAP TESTS =========\n";
+	std::cout << "\n\n======= SCAVTRAP TESTS =========\n\n";
 
 	ScavTrap Quinn("Quinn");
 	ScavTrap Yass = Quinn;
@@ -45,7 +48,7 @@ int main ()
 	Quinn.takeDamage(70);
 	Quinn.beRepaired(10);
 
-	std::cout << "======= FRAGTRAP TESTS========\n";
+	std::cout << "\n\n======= FRAGTRAP TESTS========\n\n";
 
 	FragTrap JA("JA");
 	FragTrap Matt = JA;
@@ -65,6 +68,8 @@ int main ()
 	JA.beRepaired(10);
 	JA.takeDamage(70);
 	JA.beRepaired(10);
+
+	std::cout << "\n\n====TESTS END====\n\n";
 
 	return (0);
 }

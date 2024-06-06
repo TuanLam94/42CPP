@@ -1,6 +1,6 @@
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap()
+FragTrap::FragTrap() : ClapTrap()
 {
 	_hp = 100;
 	_ep = 100;
@@ -16,15 +16,15 @@ FragTrap::FragTrap(std::string name) : ClapTrap(name)
 	std::cout << "FragTrap string constructor called\n";
 }
 
-FragTrap::FragTrap(const FragTrap& copy)
+FragTrap::FragTrap(const FragTrap& copy) : ClapTrap(copy)
 {
-	*this = copy;
 	std::cout << "FragTrap copy constructor called\n";
 }
 
 FragTrap &FragTrap::operator = (const FragTrap& other)
 {
 	if (this != &other) {
+		ClapTrap::operator=(other);
 		_name = other._name;
 		_hp = other._hp;
 		_ep = other._ep;

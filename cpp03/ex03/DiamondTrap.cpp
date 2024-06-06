@@ -1,6 +1,6 @@
 #include "DiamondTrap.hpp"
 
-DiamondTrap::DiamondTrap()
+DiamondTrap::DiamondTrap() : ClapTrap(), FragTrap(), ScavTrap()
 {
 	_hp = 100;
 	_ep = 50;
@@ -18,7 +18,7 @@ DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name), FragTrap(name), Sca
 	std::cout << "DiamondTrap string constructor called\n";
 }
 
-DiamondTrap::DiamondTrap(const DiamondTrap& copy)
+DiamondTrap::DiamondTrap(const DiamondTrap& copy) : ClapTrap(copy), FragTrap(copy), ScavTrap(copy)
 {
 	*this = copy;
 	std::cout << "DiamondTrap copy constructor called\n";
@@ -27,6 +27,9 @@ DiamondTrap::DiamondTrap(const DiamondTrap& copy)
 DiamondTrap &DiamondTrap::operator = (const DiamondTrap& other)
 {
 	if (this != &other) {
+		ClapTrap::operator=(other);
+		ScavTrap::operator=(other);
+		FragTrap::operator=(other);
 		_name = other._name;
 		_hp = other._hp;
 		_ep = other._ep;
