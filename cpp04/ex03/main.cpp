@@ -8,6 +8,11 @@
 
 //Valgrind
 
+// static AMateria* poubelle[128];
+// A chaque fois qu'on cree une materia sans l'equiper, on la met dans la poubelle
+// A chaque fois qu'on desequipe une materia on la met dans la poubelle
+// A la fin, on delete toute la poubelle.
+
 int main()
 {
     std::cout << "\n\n====TESTS BEGIN====\n\n";
@@ -34,10 +39,12 @@ int main()
 
     tmp = src->createMateria("ice");
     me->equip(tmp);
+    delete tmp;
+    tmp = NULL;
     tmp = src->createMateria("cure");
     me->equip(tmp);
-
-    me->unequip(1);
+    delete tmp;
+    tmp = NULL;
 
     ICharacter* bob = new Character("bob");
     
