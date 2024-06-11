@@ -5,12 +5,18 @@ Character::Character() : ICharacter()
     for (int i = 0; i < 4; i++) {
         _inventory[i] = NULL;
     }
+    for (int j = 0; j < 256; j++) {
+        _bin[j] = NULL;
+    }
 }
 
 Character::Character(std::string name) : ICharacter(name)
 {
     for (int i = 0; i < 4; i++) {
         _inventory[i] = NULL;
+    }
+    for (int j = 0; j < 256; j++) {
+        _bin[j] = NULL;
     }
 }
 
@@ -24,6 +30,13 @@ Character::Character(const Character& copy) : ICharacter(copy)
             _inventory[i] = copy._inventory[i]->clone();
         } else {
             _inventory[i] = NULL;
+        }
+    }
+    for (int j = 0; j < 256; j++) {
+        if (copy._bin[j]) {
+            _bin[j] = copy._bin[j]->clone();
+        } else {
+            _bin[j] = NULL;
         }
     }
 }
@@ -40,6 +53,14 @@ Character &Character::operator = (const Character& other)
                 _inventory[i] = NULL;
             }
         }
+        for (int j = 0; j < 256; j++) {
+            delete _bin[j];
+            if (other._bin[j]) {
+                _bin[j] = other._bin[j]->clone();
+            } else {
+                _bin[j] = NULL;
+            }
+        }
     }
     return (*this);
 }
@@ -49,6 +70,11 @@ Character::~Character()
     for (int i = 0; i < 4; i++) {
         if (_inventory[i]) {
             delete _inventory[i];
+        }
+    }
+    for (int j = 0; j < 256; j++) {
+        if (_bin[j]) {
+            delete _bin[j];
         }
     }
 }
@@ -73,8 +99,10 @@ void Character::equip(AMateria* m)
 
 void Character::unequip(int i) //leaks ? 
 {
-    if (i >= 0 && i < 4)
+    if (i >= 0 && i < 4) {
+        addToBin(_inventory[i]);
         _inventory[i] = NULL;
+    }
 }
 
 void Character::use(int i, ICharacter& target)
@@ -83,4 +111,12 @@ void Character::use(int i, ICharacter& target)
         _inventory[i]->use(target);
     else
         std::cout << "Can't use Materia\n";
+}
+
+void Character::addToBin(AMateria* m)
+{
+    int i = 0;
+    while (i < 256 && _bin[i])
+        i++;
+    _bin[i] = m;
 }

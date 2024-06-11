@@ -13,7 +13,7 @@ Cat::Cat(std::string type) : Animal(type)
     _type = type;
 }
 
-Cat::Cat(const Cat& copy)
+Cat::Cat(const Cat& copy) : Animal(copy)
 {
     std::cout << "Cat copy constructor called\n";
     *this = copy;
@@ -23,6 +23,7 @@ Cat &Cat::operator = (const Cat& other)
 {
     std::cout << "Cat assignment operator called\n";
     if (this != &other) {
+        Animal::operator=(other);
         _type = other._type;
     }
     return *this;

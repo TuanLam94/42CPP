@@ -9,6 +9,7 @@ class Character : public ICharacter
 {
     protected :
         AMateria* _inventory[4];
+        AMateria* _bin[256];
     public :
         Character();
         Character(const Character& copy);
@@ -19,6 +20,7 @@ class Character : public ICharacter
         void equip(AMateria* m);
         void unequip(int i);
         void use(int i, ICharacter& target);
+        void addToBin(AMateria* m);
 };
 
 #endif

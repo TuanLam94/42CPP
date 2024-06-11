@@ -1,14 +1,15 @@
 #include "MateriaSource.hpp"
+#include "IMateriaSource.hpp"
 
-#include "MateriaSource.hpp"
-
-MateriaSource::MateriaSource() {
+MateriaSource::MateriaSource() : IMateriaSource()
+{
     for (int i = 0; i < 4; ++i) {
         _source[i] = NULL;
     }
 }
 
-MateriaSource::MateriaSource(const MateriaSource& other) {
+MateriaSource::MateriaSource(const MateriaSource& other) : IMateriaSource(other)
+{
     for (int i = 0; i < 4; ++i) {
         if (other._source[i]) {
             _source[i] = other._source[i]->clone();
@@ -20,6 +21,7 @@ MateriaSource::MateriaSource(const MateriaSource& other) {
 
 MateriaSource& MateriaSource::operator=(const MateriaSource& other) {
     if (this != &other) {
+        IMateriaSource::operator=(other);
         for (int i = 0; i < 4; ++i) {
             if (_source[i]) {
                 delete _source[i];

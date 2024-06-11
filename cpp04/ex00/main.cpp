@@ -4,8 +4,6 @@
 #include "WrongCat.hpp"
 #include "WrongAnimal.hpp"
 
-////VALGRIND TO CHECK
-
 int main()
 {
     std::cout << "==== ANIMAL TESTS ====\n\n";

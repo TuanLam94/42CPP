@@ -4,7 +4,7 @@
 #include "Dog.hpp"
 #include "WrongAnimal.hpp"
 
-WrongCat::WrongCat() 
+WrongCat::WrongCat() : WrongAnimal()
 {
     std::cout << "WrongCat constructor called\n";
     _type = "WrongCat";
@@ -16,7 +16,7 @@ WrongCat::WrongCat(std::string type) : WrongAnimal(type)
     _type = type;
 }
 
-WrongCat::WrongCat(const WrongCat& copy)
+WrongCat::WrongCat(const WrongCat& copy) : WrongAnimal(copy)
 {
     std::cout << "WrongCat copy constructor called\n";
     *this = copy;
@@ -26,6 +26,7 @@ WrongCat &WrongCat::operator = (const WrongCat& other)
 {
     std::cout << "WrongCat assignment operator called\n";
     if (this != &other) {
+        WrongAnimal::operator=(other);
         _type = other._type;
     }
     return *this;

@@ -51,6 +51,10 @@ int main()
     me->use(0, *bob);
     me->use(1, *bob);
     
+    me->unequip(1);
+
+    me->use(1, *bob);
+
     delete bob;
     delete me;
     delete src;

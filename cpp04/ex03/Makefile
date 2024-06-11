@@ -33,3 +33,6 @@ fclean : clean
 	$(RM) $(NAME)
 
 re : fclean all
+
+valgrind : all
+	valgrind ./$(NAME)
