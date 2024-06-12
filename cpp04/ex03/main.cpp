@@ -6,12 +6,13 @@
 #include "IMateriaSource.hpp"
 #include "MateriaSource.hpp"
 
-//Valgrind
+//ENLEVER VIRTUAL VOID USE DANS ICE ET CURE ?
 
 // static AMateria* poubelle[128];
 // A chaque fois qu'on cree une materia sans l'equiper, on la met dans la poubelle
 // A chaque fois qu'on desequipe une materia on la met dans la poubelle
 // A la fin, on delete toute la poubelle.
+
 
 int main()
 {
