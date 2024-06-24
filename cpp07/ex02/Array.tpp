@@ -1,10 +1,15 @@
 #include "Array.hpp"
 
 template <typename T>
-Array<T>::Array() : _array(new T()), _size(0) {}
+Array<T>::Array() : _array(NULL), _size(0) {}
 
 template <typename T>
-Array<T>::Array(unsigned int n) : _array(new T[n]), _size(n) {}
+Array<T>::Array(unsigned int n) : _array(n > 0 ? new T[n] : NULL), _size(n) 
+{
+	for (size_t i = 0; i < size(); i++) {
+		_array[i] = T();
+	}
+}
 
 template <typename T>
 Array<T>::Array(const Array& copy) : _array(new T[copy._size]), _size(copy._size) 
@@ -18,7 +23,7 @@ template <typename T>
 Array<T>& Array<T>::operator = (const Array& rhs)
 {
 	if (this != rhs) {
-		delete [] _array;
+		delete[] _array;
 		_size = rhs._size;
 		_array = new T[_size];
 		for (size_t i = 0; i < _size; i++) {
@@ -31,7 +36,10 @@ Array<T>& Array<T>::operator = (const Array& rhs)
 template <typename T>
 Array<T>::~Array()
 {
-	delete [] _array;
+	if (size() != 0)
+		delete [] _array;
+	else
+		delete _array;
 }
 
 template <typename T>
@@ -55,3 +63,4 @@ T& Array<T>::operator [] (size_t index)
 		throw OutOfBoundsException();
 	return _array[index];
 }
+
