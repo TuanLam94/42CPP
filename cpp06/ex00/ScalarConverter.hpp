@@ -7,7 +7,7 @@
 
 class ScalarConverter
 {
-    protected:
+    private:
         ScalarConverter();
         ScalarConverter(const ScalarConverter& copy);
         ScalarConverter &operator=(const ScalarConverter& other);
