@@ -14,16 +14,13 @@ int main()
 
 	std::cout << "\n---Converting data pointer to uintptr---\n\n";
 
-
-	Serializer Serializer;
-
-	uintptr_t unPtr = Serializer.serialize(&data);
+	uintptr_t unPtr = Serializer::serialize(&data);
 
 	std::cout << "unPtr value : " << unPtr << std::endl;
 
 	std::cout << "\n---should see the same name and age---\n\n";
 
-	Data* newDataPtr = Serializer.deserialize(unPtr);
+	Data* newDataPtr = Serializer::deserialize(unPtr);
 
 	std::cout << "New data pointer name : " << newDataPtr->name << std::endl;
 	std::cout << "New data pointer age : " << newDataPtr->age << std::endl;

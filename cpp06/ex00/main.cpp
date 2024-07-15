@@ -6,9 +6,8 @@ int main(int argc, char **argv)
         std::cout << "Launch like this : ./convert string\n";
         return 1;
     }
-    ScalarConverter* converter;
 
-    converter->convert(argv[1]);
+    ScalarConverter::convert(argv[1]);
     
     return 0;
 }

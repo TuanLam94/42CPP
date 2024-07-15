@@ -27,4 +27,4 @@ fclean : clean
 re : fclean all
 
 valgrind : all
-	valgrind --leak-check=full -show-leak-kinds=all --track-origins=yes
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)

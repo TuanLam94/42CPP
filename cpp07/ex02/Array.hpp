@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+//MISMATCH DELETE
+
 template <typename T> class Array
 {
 	private:
@@ -30,6 +32,7 @@ template <typename T> class Array
 };
 
 template <typename T>
+
 std::ostream& operator << (std::ostream& os, const Array<T>& arr)
 {
 	for (size_t i = 0; i < arr.size(); i++) {

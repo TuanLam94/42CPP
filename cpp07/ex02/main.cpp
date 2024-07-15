@@ -45,6 +45,19 @@ int main()
 
 	std::cout << c << std::endl;
 
+	std::cout << "\n---last test, checking parametric constructor with size 0---\n";
+
+	Array <std::string>d;
+
+	std::cout << d << std::endl;
+	std::cout << d.size() << std::endl;
+
+	Array<std::string>e(0);
+
+	std::cout << e << std::endl;
+	std::cout << e.size() << std::endl;
+
+
 	std::cout << "\n====TESTS END====\n";
 
 	return 0;
