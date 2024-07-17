@@ -8,14 +8,7 @@
 #include <cstdlib>
 #include <iterator>
 
-void parseMaps(std::string inputFile, std::string dataFile)
-{
-    std::multimap<std::string, double> inputMap = parseFileToMap(inputFile, '|');
-    std::multimap<std::string, double> dataMap = parseFileToMap(dataFile, ',');
-
-   printMap(inputMap);
-    // printMap(dataMap);
-}
+typedef std::multimap<std::string, double>::iterator MapIterator;
 
 std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
 {
@@ -28,26 +21,51 @@ std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
     std::multimap<std::string, double> map;
     std::string line;
 
+    std::getline(in, line);
+
     while (std::getline(in, line)) {
         std::string key;
         std::string value;
 
         key = trim(substringBeforeDelimiter(line, delim));
-        value = trim(substringAfterDelimiter(line, delim));       //first check wrong input
+        value = trim(substringAfterDelimiter(line, delim));
 
         char *endptr;
         double doubleValue = strtod(value.c_str(), &endptr);
 
         if (!keyCheck(key))
             map.insert(std::pair<std::string, double>("Wrong date input", doubleValue));
-
-        if (whichDigitString(value) == -1)
+        else if (whichDigitString(value) == -1)
             map.insert(std::pair<std::string, double>("Wrong value input", doubleValue));
-        else if (whichDigitString(value) == 0)
-
-        map.insert(std::pair<std::string, float>(key, doubleValue));
+        else
+            map.insert(std::pair<std::string, double>(key, doubleValue));
     }
     return map;
+}
+
+void bitcoinExchange(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+{
+    MapIterator inputIter;
+    MapIterator dataIter;
+
+    for (inputIter = inputMap.begin(); inputIter != inputMap.end(); inputIter++) {
+        dataIter = findClosestDate(inputMap, dataMap);
+    }
+}
+
+MapIterator findClosestDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+{
+    MapIterator dataIter;
+    size_t size = smallerMapsSizes(inputMap, dataMap);
+
+    for (size_t i = 0; i < size; i++) {
+        
+    }
+}
+
+size_t smallerMapsSizes(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+{
+    return (inputMap.size() < dataMap.size() ? inputMap.size() : dataMap.size());
 }
 
 int whichDigitString(std::string str)
@@ -82,8 +100,6 @@ int whichDigitString(std::string str)
 
 void printMap(std::multimap<std::string, double> map)
 {
-    typedef std::multimap<std::string, double>::iterator MapIterator;
-
     for (MapIterator iter = map.begin(); iter != map.end(); iter++) {
         std::cout << iter->first << ": " << iter->second << std::endl;
     }
