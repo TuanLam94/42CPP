@@ -13,8 +13,8 @@ void parseMaps(std::string inputFile, std::string dataFile)
     std::multimap<std::string, double> inputMap = parseFileToMap(inputFile, '|');
     std::multimap<std::string, double> dataMap = parseFileToMap(dataFile, ',');
 
-    printMap(inputMap);
-    printMap(dataMap);
+   printMap(inputMap);
+    // printMap(dataMap);
 }
 
 std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
@@ -37,6 +37,14 @@ std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
 
         char *endptr;
         double doubleValue = strtod(value.c_str(), &endptr);
+
+        if (!keyCheck(key))
+            map.insert(std::pair<std::string, double>("Wrong date input", doubleValue));
+
+        if (whichDigitString(value) == -1)
+            map.insert(std::pair<std::string, double>("Wrong value input", doubleValue));
+        else if (whichDigitString(value) == 0)
+
         map.insert(std::pair<std::string, float>(key, doubleValue));
     }
     return map;
@@ -121,6 +129,37 @@ double AbsDouble(double num)
     return num;
 }
 
+bool keyCheck(std::string key)
+{
+    for (int i = 0; i < 4; i++) {
+        if (!isdigit(key[i]))
+            return false;
+    }
+    if (key[4] != '-' && key[7] != '-')
+        return false;
+
+    char *endptr;
+
+    std::string month = key.substr(5, 2);
+    for (int i = 0; i < 2; i++) {
+        if (!isdigit(month[i]))
+            return false;
+    }
+    if (strtoll(month.c_str(), &endptr, 10) > 12)
+        return false;
+    
+    std::string day = key.substr(8, 2);
+    for (int i = 0; i < 2; i++) {
+        if (!isdigit(day[i])) {
+            return false;
+        }
+    }
+    if (strtoll(month.c_str(), &endptr, 10) > 31)
+        return false;
+
+    return true;
+}
+
 
         // switch (whichDigitString(value)) {
         //     case -1:
@@ -142,3 +181,4 @@ double AbsDouble(double num)
         //         break;
         //     }
         // }
+
