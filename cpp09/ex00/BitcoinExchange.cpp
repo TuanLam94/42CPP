@@ -55,11 +55,11 @@ void bitcoinExchange(std::multimap<std::string, double> inputMap, std::multimap<
 
 MapIterator findClosestDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
 {
-    MapIterator dataIter;
+    
     size_t size = smallerMapsSizes(inputMap, dataMap);
 
     for (size_t i = 0; i < size; i++) {
-        
+        if (compareDates(it->))
     }
 }
 
