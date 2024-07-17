@@ -5,6 +5,7 @@ CC = c++ -std=c++98
 CFLAGS = -Wall -Werror -Wextra
 
 SRC = main.cpp \
+		BitcoinExchange.cpp \
 		
 OBJ = $(SRC:.cpp=.o)
 
