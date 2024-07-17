@@ -8,18 +8,16 @@
 #include <cstdlib>
 #include <iterator>
 
-template<typename T>
 void parseMaps(std::string inputFile, std::string dataFile)
 {
-    std::multimap<std::string, T> inputMap = parseFileToMap<T>(inputFile, "|");
-    std::multimap<std::string, T> dataMap = parseFileToMap<T>(dataFile, ",");
+    std::multimap<std::string, double> inputMap = parseFileToMap(inputFile, '|');
+    std::multimap<std::string, double> dataMap = parseFileToMap(dataFile, ',');
 
     printMap(inputMap);
     printMap(dataMap);
 }
 
-template<typename T>
-std::multimap<std::string, T> parseFileToMap(std::string file, char delim)
+std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
 {
     std::ifstream in(file.c_str());
     if (!in.is_open()) {
@@ -27,7 +25,7 @@ std::multimap<std::string, T> parseFileToMap(std::string file, char delim)
         exit(-1);
     }
 
-    std::map<std::string, T> map;
+    std::multimap<std::string, double> map;
     std::string line;
 
     while (std::getline(in, line)) {
@@ -38,26 +36,8 @@ std::multimap<std::string, T> parseFileToMap(std::string file, char delim)
         value = trim(substringAfterDelimiter(line, delim));       //first check wrong input
 
         char *endptr;
-        switch (whichDigitString(value)) {
-            case -1:
-            {
-                key = "wrong input";
-                map.insert(std::pair<std::string, int>(key, strtol(value.c_str(), &endptr, 10)));
-                break;
-            }
-            case 0:
-            {
-                int intValue = strtol(value.c_str(), &endptr, 10);
-                map.insert(std::pair<std::string, int>(key, intValue));
-                break;
-            }
-            case 1:
-            {
-                float floatValue = strtod(value.c_str(), &endptr);
-                map.insert(std::pair<std::string, float>(key, floatValue));
-                break;
-            }
-        }
+        double doubleValue = strtod(value.c_str(), &endptr);
+        map.insert(std::pair<std::string, float>(key, doubleValue));
     }
     return map;
 }
@@ -92,10 +72,9 @@ int whichDigitString(std::string str)
     return -1;
 }
 
-template<typename T>
-void printMap(std::multimap<std::string, T> map)
+void printMap(std::multimap<std::string, double> map)
 {
-    typedef typename std::multimap<std::string, T>::iterator MapIterator;
+    typedef std::multimap<std::string, double>::iterator MapIterator;
 
     for (MapIterator iter = map.begin(); iter != map.end(); iter++) {
         std::cout << iter->first << ": " << iter->second << std::endl;
@@ -141,3 +120,25 @@ double AbsDouble(double num)
         return -num;
     return num;
 }
+
+
+        // switch (whichDigitString(value)) {
+        //     case -1:
+        //     {
+        //         key = "wrong input";
+        //         map.insert(std::pair<std::string, int>(key, strtol(value.c_str(), &endptr, 10)));
+        //         break;
+        //     }
+        //     case 0:
+        //     {
+        //         int intValue = strtol(value.c_str(), &endptr, 10);
+        //         map.insert(std::pair<std::string, int>(key, intValue));
+        //         break;
+        //     }
+        //     case 1:
+        //     {
+        //         float floatValue = strtod(value.c_str(), &endptr);
+        //         map.insert(std::pair<std::string, float>(key, floatValue));
+        //         break;
+        //     }
+        // }
