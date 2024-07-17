@@ -2,6 +2,7 @@
 #include <map>
 #include <variant>
 
+template<typename T>
 int main(int argc, char **argv)
 {
     if (argc != 2) {
@@ -11,10 +12,15 @@ int main(int argc, char **argv)
     std::string inputFile = argv[1];
     std::string dataFile = "data.csv";
 
-    using VariantType = std::variant<int, float>;
+    parseMaps(inputFile, dataFile);
 
-    std::map<std::string, VariantType> inputMap = parseInputFile(inputFile);
-    std::map<std::string, VariantType> dataMap = parseDataFile(dataFile);
+    // std::map<std::string, T> inputMap = parseInputFile(inputFile);
+    // std::map<std::string, T> dataMap = parseDataFile(dataFile);
+
+    (void)inputFile;
+    (void)dataFile;
+    (void)inputMap;
+    (void)dataMap;
 
     return 0;
 }
