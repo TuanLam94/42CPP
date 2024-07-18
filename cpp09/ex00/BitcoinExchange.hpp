@@ -3,6 +3,13 @@
 
 #include <iostream>
 #include <map>
+#include "BitcoinExchange.hpp"
+#include <limits>
+#include <cerrno>
+#include <climits>
+#include <fstream>
+#include <cstdlib>
+#include <iterator>
 
 #define FLOAT_MAX 3.4028235677973366e+38;
 

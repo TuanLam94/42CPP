@@ -1,12 +1,4 @@
-#include <iostream>
-#include <map>
 #include "BitcoinExchange.hpp"
-#include <limits>
-#include <cerrno>
-#include <climits>
-#include <fstream>
-#include <cstdlib>
-#include <iterator>
 
 typedef std::multimap<std::string, std::string>::iterator MapIterator;
 
@@ -53,15 +45,6 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
     MapIterator inputIter = inputMap.begin();
     MapIterator dataIter = dataMap.begin();
     size_t i = 0;
-    
-    // std::cout << "===INPUT MAP===\n\n";
-    // printMap(inputMap);
-    // // std::cout << "\n\n===DATA MAP===\n\n";
-    // // printMap(dataMap);
-
-    // (void)inputIter;
-    // (void)dataIter;
-    // (void)i;
 
     while (inputIter != inputMap.end() && i < inputMap.size()) {
         if (wrongInputDate(dataMap, inputIter))
@@ -132,16 +115,15 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
 
     else if (whichDigitString(dataIter->second) == 0 && whichDigitString(inputIter->second) == 0) {
         
-        char* endptr;
-        long long dataInt = std::strtoll(dataIter->second.c_str(), &endptr, 10);
-        long long inputInt = std::strtoll(inputIter->second.c_str(), &endptr, 10);
+        long long dataInt = std::strtoll(dataIter->second.c_str(), NULL, 10);
+        long long inputInt = std::strtoll(inputIter->second.c_str(), NULL, 10);
         long long res = dataInt * inputInt;
         if (res > INT_MAX) {
-            std::cout << "Error: too large a number\n";
+            std::cout << inputIter->first << " Error: too large a number\n";
             return ;
         }
         else if (res < 0) {
-            std::cout << "Error: not a positive number\n";
+            std::cout << inputIter->first<< " Error: not a positive number\n";
             return ;
         }
         else {
@@ -150,18 +132,18 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
         }
     }
     else if (whichDigitString(dataIter->second) == 1 || whichDigitString(inputIter->second) == 1) {
-        char *endptr;
-        double dataDouble = std::strtod(dataIter->second.c_str(), &endptr);
-        double inputDouble = std::strtod(dataIter->second.c_str(), &endptr);
+        double dataDouble = std::strtod(dataIter->second.c_str(), NULL);
+        double inputDouble = std::strtod(inputIter->second.c_str(), NULL);
         double res = dataDouble * inputDouble;
+
         if (res < 0) {
-            std::cout << "Error: not a positive number\n";
+            std::cout << inputIter->first << " Error: not a positive number\n";
             return ;
         }
-        // else if (AbsDouble(res) > 3.4028235677973366e+38) {
-        //     std::cout << "Error: too big a float\n";
-        //     return ;
-        // }
+        else if (res > INT_MAX) {
+            std::cout << inputIter->first << " Error: too large a number\n";
+            return ;
+        }
         else {
             std::cout << inputIter->first << " => " << res << std::endl;
             return ;

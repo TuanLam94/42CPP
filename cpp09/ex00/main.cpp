@@ -1,6 +1,3 @@
-#include <iostream>
-#include <map>
-#include <variant>
 #include "BitcoinExchange.hpp"
 
 int main(int argc, char **argv)
