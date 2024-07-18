@@ -12,10 +12,7 @@ int main(int argc, char **argv)
 
     std::multimap<std::string, std::string> inputMap = parseFileToMap(inputFile, '|');
     std::multimap<std::string, std::string> dataMap = parseFileToMap(dataFile, ',');
-    // std::cout << "===INPUT MAP===\n\n";
-    // printMap(inputMap);
-    // std::cout << "\n\n===DATA MAP===\n\n";
-    // printMap(dataMap);
+
 
     bitcoinExchange(inputMap, dataMap);
     return 0;
