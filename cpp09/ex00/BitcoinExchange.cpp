@@ -19,6 +19,8 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
         std::string key;
         std::string value;
 
+		//checkline
+
         key = substringBeforeDelimiter(line, delim);
         value = substringAfterDelimiter(line, delim);
 
@@ -129,6 +131,36 @@ bool isValidDate(const std::string& date)
         return false;
 
     return true;
+}
+
+int checkLine(std::string line, char delim)
+{
+	int dotCount = 0;
+	int delimCount = 0;
+	size_t dotPos = line.find('.');
+	size_t delimPos = line.find(delim);
+
+	for (size_t i = 0; i < line.size(); i++) {
+		if (line[i] == '.')
+			dotCount++;
+		if (line[i] == delim)
+			delimCount++;
+	}
+	if (dotCount > 1 || delimCount != 1)
+		return -1;							//wrong Format;
+
+	std::string dateLine = trim(line.substr(0, delimPos));
+	if (!isValidDate(dateLine))
+		return -2;							//wrong Date;
+
+	std::string valueLine = trim(line.substr(delimPos + 1, std::npos))
+	if (std::strtod(valueLine.c_str()) < 0)
+		return -3;							//negative Number;
+
+	if (std::strtod(valueLine.c_str()) > 1000)
+		return -4;							//too big a number;
+
+	
 }
 
 bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
