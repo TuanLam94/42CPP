@@ -13,8 +13,8 @@ int main(int argc, char **argv)
     std::string inputFile(argv[1]);
     std::string dataFile = "data.csv";
 
-    std::multimap<std::string, double> inputMap = parseFileToMap(inputFile, '|');
-    std::multimap<std::string, double> dataMap = parseFileToMap(dataFile, ',');
+    std::multimap<std::string, std::string> inputMap = parseFileToMap(inputFile, '|');
+    std::multimap<std::string, std::string> dataMap = parseFileToMap(dataFile, ',');
     // std::cout << "===INPUT MAP===\n\n";
     // printMap(inputMap);
     // std::cout << "\n\n===DATA MAP===\n\n";

@@ -8,9 +8,9 @@
 #include <cstdlib>
 #include <iterator>
 
-typedef std::multimap<std::string, double>::iterator MapIterator;
+typedef std::multimap<std::string, std::string>::iterator MapIterator;
 
-std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
+std::multimap<std::string, std::string> parseFileToMap(std::string& file, char delim)
 {
     std::ifstream in(file.c_str());
     if (!in.is_open()) {
@@ -18,7 +18,7 @@ std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
         exit(-1);
     }
 
-    std::multimap<std::string, double> map;
+    std::multimap<std::string, std::string> map;
     std::string line;
 
     std::getline(in, line);
@@ -27,52 +27,91 @@ std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
         std::string key;
         std::string value;
 
-        key = trim(substringBeforeDelimiter(line, delim));
-        value = trim(substringAfterDelimiter(line, delim));
+        key = substringBeforeDelimiter(line, delim);
+        value = substringAfterDelimiter(line, delim);
 
-        char *endptr;
-        double doubleValue = strtod(value.c_str(), &endptr);
+        if (key == line)
+            key = key + " Error: wrong input";
+        else if (trim(value).empty())
+            key = key + "Error: no value found";
+
+        key = trim(key);
+        value = trim(value);
 
         if (!keyCheck(key))
-            map.insert(std::pair<std::string, double>("Wrong date input", doubleValue));
+            map.insert(std::pair<std::string, std::string>(key, ""));
         else if (whichDigitString(value) == -1)
-            map.insert(std::pair<std::string, double>("Wrong value input", doubleValue));
+            map.insert(std::pair<std::string, std::string>(key, value));
         else
-            map.insert(std::pair<std::string, double>(key, doubleValue));
+            map.insert(std::pair<std::string, std::string>(key, value));
     }
     return map;
 }
 
-void bitcoinExchange(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::multimap<std::string, std::string>& dataMap)
 {
-    MapIterator inputIter;
+    MapIterator inputIter = inputMap.begin();
     MapIterator dataIter = dataMap.begin();
+    size_t i = 0;
+    
+    // std::cout << "===INPUT MAP===\n\n";
+    // printMap(inputMap);
+    // // std::cout << "\n\n===DATA MAP===\n\n";
+    // // printMap(dataMap);
 
-    for (inputIter = inputMap.begin(); inputIter != inputMap.end(); inputIter++) {
-        if (wrongInputDate(inputMap, dataMap, inputIter))
-            printDateError(dataMap);
+    // (void)inputIter;
+    // (void)dataIter;
+    // (void)i;
+
+    while (inputIter != inputMap.end() && i < inputMap.size()) {
+        if (wrongInputDate(dataMap, inputIter))
+            printDateError(dataMap, inputIter);
         else {
-            while (dataIter->first <= inputIter->first)
+            while (dataIter != dataMap.end() && dataIter->first <= inputIter->first)
                 dataIter++;
-            dataIter--;
+            if (dataIter != dataMap.begin())
+                dataIter--;
             printResult(inputIter, dataIter);
         }
+        i++;
+        inputIter++;
     }
 }
 
-void printResult(MapIterator& inputIter, MapIterator& dataIter)
-{
-    int type = whichDigitString()
-}
-
-void printDateError(std::multimap<std::string, double> dataMap)
+void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
 {
     MapIterator dataIter = dataMap.begin();
 
-    std::cout << "No data for this date, data start at " << dataIter->first << std::endl;
+    if (!isValidDate(inputIter->first)) {
+        std::cout << inputIter->first << ": Invalid date\n";
+        return ;
+    }
+    else {
+        size_t pos = inputIter->first.find(" ");
+        std::cout << inputIter->first.substr(0, pos) << " No data for this date, data start at " << dataIter->first << std::endl;
+        return ;
+    }
 }
 
-bool wrongInputDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap, MapIterator& inputIter)
+bool isValidDate(const std::string& date)
+{
+    if (date.length() != 10 || date[4] != '-' || date[7] != '-')
+        return false;
+
+    int month, day;
+
+    month = std::atoi(date.substr(5, 2).c_str());
+    if (month > 12)
+        return false;
+    
+    day = std::atoi(date.substr(8, 2).c_str());
+    if (day > 31)
+        return false;
+
+    return true;
+}
+
+bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
 {
     MapIterator dataIter = dataMap.begin();
 
@@ -84,12 +123,61 @@ bool wrongInputDate(std::multimap<std::string, double> inputMap, std::multimap<s
     return true;
 }
 
-int whichDigitString(std::string str)
+void printResult(MapIterator& inputIter, MapIterator& dataIter)
+{
+    if (inputIter->second.empty()) {
+        std::cout << inputIter->first << std::endl;
+        return;
+    }
+
+    else if (whichDigitString(dataIter->second) == 0 && whichDigitString(inputIter->second) == 0) {
+        
+        char* endptr;
+        long long dataInt = std::strtoll(dataIter->second.c_str(), &endptr, 10);
+        long long inputInt = std::strtoll(inputIter->second.c_str(), &endptr, 10);
+        long long res = dataInt * inputInt;
+        if (res > INT_MAX) {
+            std::cout << "Error: too large a number\n";
+            return ;
+        }
+        else if (res < 0) {
+            std::cout << "Error: not a positive number\n";
+            return ;
+        }
+        else {
+            std::cout << inputIter->first << " => " << res << std::endl;
+            return ;
+        }
+    }
+    else if (whichDigitString(dataIter->second) == 1 || whichDigitString(inputIter->second) == 1) {
+        char *endptr;
+        double dataDouble = std::strtod(dataIter->second.c_str(), &endptr);
+        double inputDouble = std::strtod(dataIter->second.c_str(), &endptr);
+        double res = dataDouble * inputDouble;
+        if (res < 0) {
+            std::cout << "Error: not a positive number\n";
+            return ;
+        }
+        // else if (AbsDouble(res) > 3.4028235677973366e+38) {
+        //     std::cout << "Error: too big a float\n";
+        //     return ;
+        // }
+        else {
+            std::cout << inputIter->first << " => " << res << std::endl;
+            return ;
+        }
+    }
+    else {
+        std::cout << inputIter->first << " => " << inputIter->second << std::endl;
+    }
+}
+
+int whichDigitString(std::string& str)
 {
     int count = 0;
 
     if (str.empty())
-        return -1;
+        return -2;
 
     for (unsigned long i = 0; i < str.size(); i++) {
         if (str[i] == '.')
@@ -114,10 +202,10 @@ int whichDigitString(std::string str)
     return -1;
 }
 
-void printMap(std::multimap<std::string, double> map)
+void printMap(std::multimap<std::string, std::string>& map)
 {
     for (MapIterator iter = map.begin(); iter != map.end(); iter++) {
-        std::cout << iter->first << ": " << iter->second << std::endl;
+        std::cout << "key: " << iter->first << " value: " << iter->second << std::endl;
     }
 }
 
@@ -161,7 +249,7 @@ double AbsDouble(double num)
     return num;
 }
 
-bool keyCheck(std::string key)
+bool keyCheck(std::string& key)
 {
     for (int i = 0; i < 4; i++) {
         if (!isdigit(key[i]))
