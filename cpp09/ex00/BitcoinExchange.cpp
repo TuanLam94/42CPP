@@ -46,26 +46,42 @@ std::multimap<std::string, double> parseFileToMap(std::string file, char delim)
 void bitcoinExchange(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
 {
     MapIterator inputIter;
-    MapIterator dataIter;
+    MapIterator dataIter = dataMap.begin();
 
     for (inputIter = inputMap.begin(); inputIter != inputMap.end(); inputIter++) {
-        dataIter = findClosestDate(inputMap, dataMap);
+        if (wrongInputDate(inputMap, dataMap, inputIter))
+            printDateError(dataMap);
+        else {
+            while (dataIter->first <= inputIter->first)
+                dataIter++;
+            dataIter--;
+            printResult(inputIter, dataIter);
+        }
     }
 }
 
-MapIterator findClosestDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+void printResult(MapIterator& inputIter, MapIterator& dataIter)
 {
-    
-    size_t size = smallerMapsSizes(inputMap, dataMap);
-
-    for (size_t i = 0; i < size; i++) {
-        if (compareDates(it->))
-    }
+    int type = whichDigitString()
 }
 
-size_t smallerMapsSizes(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+void printDateError(std::multimap<std::string, double> dataMap)
 {
-    return (inputMap.size() < dataMap.size() ? inputMap.size() : dataMap.size());
+    MapIterator dataIter = dataMap.begin();
+
+    std::cout << "No data for this date, data start at " << dataIter->first << std::endl;
+}
+
+bool wrongInputDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap, MapIterator& inputIter)
+{
+    MapIterator dataIter = dataMap.begin();
+
+    while (dataIter != dataMap.end()) {
+        if (dataIter->first <= inputIter->first)
+            return false;
+        dataIter++;
+    }
+    return true;
 }
 
 int whichDigitString(std::string str)
@@ -197,4 +213,19 @@ bool keyCheck(std::string key)
         //         break;
         //     }
         // }
+
+// int findClosestDate(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap, MapIterator* it)
+// {
+//     int index = 0;
+//     size_t size = smallerMapsSizes(inputMap, dataMap);
+
+//     for (size_t i = 0; i < size; i++) {
+        
+//     }
+// }
+
+// size_t smallerMapsSizes(std::multimap<std::string, double> inputMap, std::multimap<std::string, double> dataMap)
+// {
+//     return (inputMap.size() < dataMap.size() ? inputMap.size() : dataMap.size());
+// }
 
