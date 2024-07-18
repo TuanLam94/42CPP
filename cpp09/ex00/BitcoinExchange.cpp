@@ -34,8 +34,6 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
             map.insert(std::pair<std::string, std::string>(key, ""));
         else if (whichDigitString(value) == -1)
             map.insert(std::pair<std::string, std::string>(key, value));
-        else if (whichDigitString(value) == -3)
-            map.insert(std::pair<std::string, std::string>(key, " value is too big, max is 1000"));
         else
             map.insert(std::pair<std::string, std::string>(key, value));
     }
@@ -61,19 +59,13 @@ int whichDigitString(std::string& str)
     errno = 0;                                                                      
     char *endptr;
     long long longValue = std::strtoll(str.c_str(), &endptr, 10);
-    if (errno == 0 && *endptr == '\0' && longValue >= INT_MIN) {
-        if (longValue > 1000)
-            return -3;
+    if (errno == 0 && *endptr == '\0' && longValue >= INT_MIN && longValue <= INT_MAX)
         return 0;                                                                   //is int
-    }
 
     errno = 0;
     double doubleValue = std::strtod(str.c_str(), &endptr);
-    if (errno == 0 && *endptr == '\0') {
-        if (doubleValue > 1000)
-            return -3;
+    if (errno == 0 && *endptr == '\0' && doubleValue >= INT_MIN && doubleValue <= INT_MAX)
         return 1;                                                                   //is float
-    }
 
     return -1;
 }
@@ -84,28 +76,28 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
     MapIterator dataIter = dataMap.begin();
     size_t i = 0;
 
-    std::cout << "===INPUT MAP===\n\n";
-    printMap(inputMap);
-    std::cout << "\n\n===DATA MAP===\n\n";
-    printMap(dataMap);
+    // std::cout << "===INPUT MAP===\n\n";
+    // printMap(inputMap);
+    // std::cout << "\n\n===DATA MAP===\n\n";
+    // printMap(dataMap);
 
-    (void)inputIter;
-    (void)dataIter;
-    (void)i;
+    // (void)inputIter;
+    // (void)dataIter;
+    // (void)i;
 
-    // while (inputIter != inputMap.end() && i < inputMap.size()) {
-    //     if (wrongInputDate(dataMap, inputIter))
-    //         printDateError(dataMap, inputIter);
-    //     else {
-    //         while (dataIter != dataMap.end() && dataIter->first <= inputIter->first)
-    //             dataIter++;
-    //         if (dataIter != dataMap.begin())
-    //             dataIter--;
-    //         printResult(inputIter, dataIter);
-    //     }
-    //     i++;
-    //     inputIter++;
-    // }
+    while (inputIter != inputMap.end() && i < inputMap.size()) {
+        if (wrongInputDate(dataMap, inputIter))
+            printDateError(dataMap, inputIter);
+        else {
+            while (dataIter != dataMap.end() && dataIter->first <= inputIter->first)
+                dataIter++;
+            if (dataIter != dataMap.begin())
+                dataIter--;
+            printResult(inputIter, dataIter);
+        }
+        i++;
+        inputIter++;
+    }
 }
 
 void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
@@ -161,9 +153,8 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
         long long dataInt = std::strtoll(dataIter->second.c_str(), NULL, 10);
         long long inputInt = std::strtoll(inputIter->second.c_str(), NULL, 10);
         long long res = dataInt * inputInt;
-        if (inputIter->second == " value is too big, max is 1000") {
-            std::cout << inputIter->first << inputIter->second << std::endl;
-        }
+        if (inputInt > 1000)
+            std::cout << inputIter->first << " => input value is too big, max is 1000" << std::endl;
         else if (res > INT_MAX)
             std::cout << inputIter->first << " Error: too large a number\n";
         else if (res < 0)
@@ -177,7 +168,9 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
         double inputDouble = std::strtod(inputIter->second.c_str(), NULL);
         double res = dataDouble * inputDouble;
 
-        if (res < 0)
+        if (inputDouble > 1000)
+            std::cout << inputIter->first << " => input value is too big, max is 1000" << std::endl;
+        else if (res < 0)
             std::cout << inputIter->first << " Error: not a positive number\n";
         else if (res > INT_MAX)
             std::cout << inputIter->first << " Error: too large a number\n";
