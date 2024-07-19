@@ -100,8 +100,8 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
     MapIterator dataIter = dataMap.begin();
 
     while (inputIter != inputMap.end()) {
-        dataIter = dataMap.upper_bound(inputIter->first);
-            if (dataIter != dataMap.begin())
+        dataIter = dataMap.lower_bound(inputIter->first);
+            if (dataIter != dataMap.begin() && (dataIter == dataMap.end() || dataIter->first > inputIter->first))
                 dataIter--;
             printResult(inputIter, dataIter);
         inputIter++;
