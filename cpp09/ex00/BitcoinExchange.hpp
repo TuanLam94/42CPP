@@ -10,6 +10,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iterator>
+#include <algorithm>
 
 #define FLOAT_MAX 3.4028235677973366e+38;
 
