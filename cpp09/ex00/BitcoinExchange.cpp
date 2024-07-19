@@ -23,15 +23,15 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
 		if (delim == '|') {
 			int toParse = checkLine(line, delim);
 			if (toParse == -1)
-				value = "Error: wrong format";
+				value = "Error: wrong format.";
 			else if (toParse == -2)
-				value = "Error: invalid date";
+				value = "Error: invalid date.";
 			else if (toParse == -3)
-				value = "Error: not a positive number";
+				value = "Error: not a positive number.";
 			else if (toParse == -4)
-				value = "Error: too large a number";
+				value = "Error: too large a number.";
 			else if (toParse == -5)
-				value = "Error: No data for this date, data start at 2009-01-02";
+				value = "Error: No data for this date, data start at 2009-01-02.";
 			else
 				value = trim(substringAfterDelimiter(line, delim));
 		}
