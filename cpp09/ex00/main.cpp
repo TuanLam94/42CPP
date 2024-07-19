@@ -6,14 +6,13 @@ int main(int argc, char **argv)
         std::cout << "Wrong input, launch like this : ./btc input_file" << std::endl;
         return -1;
     }
-    
+
     std::string inputFile(argv[1]);
     std::string dataFile = "data.csv";
-
     std::multimap<std::string, std::string> inputMap = parseFileToMap(inputFile, '|');
     std::multimap<std::string, std::string> dataMap = parseFileToMap(dataFile, ',');
 
-
     bitcoinExchange(inputMap, dataMap);
+
     return 0;
 }

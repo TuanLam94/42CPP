@@ -17,20 +17,23 @@ typedef std::multimap<std::string, std::string>::iterator MapIterator;
 
 std::multimap<std::string, std::string> parseFileToMap(std::string& file, char delim);
 
-void printMap(std::multimap<std::string, std::string>& map);
 
 void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::multimap<std::string, std::string>& dataMap);
 
-void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
-bool isValidDate(const std::string& date);
-bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
 void printResult(MapIterator& inputIter, MapIterator& dataIter);
 int whichDigitString(std::string& str);
-bool keyCheck(std::string& key);
+int checkLine(std::string line, char delim);
+bool isValidDate(const std::string& date);
+void printMap(std::multimap<std::string, std::string>& map);
 std::string substringBeforeDelimiter(std::string& str, char delim);
 std::string substringAfterDelimiter(std::string& str, char delim);
 std::string trim(std::string str);
-double AbsDouble(double num);
+
+
+// void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
+// bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
+// bool keyCheck(std::string& key);
+// double AbsDouble(double num);
 
 
 #endif
