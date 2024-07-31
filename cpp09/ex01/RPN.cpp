@@ -31,7 +31,7 @@ int checkDeque(std::deque<std::string> deque)
             it++;
             count++;
         }
-        while (it != deque.end() && isStringToken(*it)) {
+        while (it != deque.end() && isStringOperator(*it)) {
             it++;
             count--;
         }
@@ -42,6 +42,54 @@ int checkDeque(std::deque<std::string> deque)
     return count == 0 ? 1 : 0;
 }
 
+void RPN(char* input, std::deque<std::string> deque)
+{
+	std::deque<int> numDeque;
+	std::deque<char> opDeque;
+	std::deque<std::string>::iterator it = deque.begin();
+
+	while (it != deque.end()) {
+		while (isStringDigit(*it))
+			numDeque.push_back(strtoll(it->c_str(), NULL, 10));
+		while (isStringOperator(*it))
+			opDeque.push_back(it->at(0));
+
+		operate(numDeque, opDeque);
+		it++;
+	}
+	std::cout << numDeque.begin() << std::endl;
+}
+
+void operate(std::deque<int> numq, std::deque<char> opq)
+{
+	while (numq.size() > 1 && !opq.empty()) {
+		int num1 = numq.back();
+		numq.pop_back();
+		int num2 = numq.back();
+		numq.pop_back();
+		
+		char* op = opq.back();
+		opq.pop_back();
+
+		int res;
+		switch(op) {
+			case '+':
+				res = num1 + num2;
+				break;
+			case '-':
+				res = num1 - num2;
+				break;
+			case '*':
+				res = num1 * num2;
+				break;
+			case '/':
+				res = num1 / num2;
+				break;
+		}
+		numq.push_back(res);
+	}
+}
+
 bool isStringDigit(std::string str)
 {
     if (str.size() > 2 || str.empty() || (str.size() == 2 && str[0] != '-') || (str.size() == 1 && !isdigit(str[0])))
@@ -49,7 +97,7 @@ bool isStringDigit(std::string str)
     return true;
 }
 
-bool isStringToken(std::string str)
+bool isStringOperator(std::string str)
 {
     return (str.size() == 1 && (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/'));
 }

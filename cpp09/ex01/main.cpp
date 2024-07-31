@@ -20,18 +20,12 @@ int main(int argc, char **argv)
         std::cout << "Invalid input" << std::endl;
         return -1;
     }
-    else
+    else {
         std::cout << "valid input" << std::endl;
+		RPN(argv[1], deque);
+	}
 
-    
-
-
-    // if (!checkInput(deque)) {
-    //     std::cout << "Error: wrong input format\n";
-    //     return -1;
-    // }
-
-    // RPN(deque);
+	
 
     return 0;
 }
