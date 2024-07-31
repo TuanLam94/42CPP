@@ -175,8 +175,12 @@ bool printErrors(const std::string& str)
 		std::cout << "Error: invalid date." << std::endl;
 		return true;
 	}
-	else if (str.find("number") != std::string::npos) {
+	else if (str.find("positive") != std::string::npos) {
 		std::cout << "Error: not a positive number." << std::endl;
+		return true;
+	}
+	else if (str.find("large") != std::string::npos) {
+		std::cout << "Error: too large a number." << std::endl;
 		return true;
 	}
 	else
