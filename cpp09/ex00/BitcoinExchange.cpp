@@ -13,6 +13,9 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
     std::multimap<std::string, std::string> map;
     std::string line;
 
+	int i = 10000;
+	char buffer[2048];
+
     std::getline(in, line);
 
     while (std::getline(in, line)) {
@@ -20,7 +23,12 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
         std::string value;
 
 		key = trim(substringBeforeDelimiter(line, delim));
+
 		if (delim == '|') {
+			std::sprintf(buffer, "%d ", i);
+			std::string temp(buffer);
+			key = temp + key;
+
 			int toParse = checkLine(line, delim);
             switch (toParse) {
                 case -1:
@@ -45,7 +53,7 @@ std::multimap<std::string, std::string> parseFileToMap(std::string& file, char d
 		}
 		else
 			value = trim(substringAfterDelimiter(line, delim));
-
+		i++;
         map.insert(std::pair<std::string, std::string>(key, value));
     }
     return map;
@@ -99,8 +107,18 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
     MapIterator inputIter = inputMap.begin();
     MapIterator dataIter = dataMap.begin();
 
-    while (inputIter != inputMap.end()) {                                               //if error its here
-        dataIter = dataMap.upper_bound(inputIter->first);
+	// std::cout << "Input Map : \n";
+	// printMap(inputMap);
+	// std::cout << "Data Map : \n";
+	// printMap(dataMap);
+
+	// (void)inputIter;
+	// (void)dataIter;
+
+    while (inputIter != inputMap.end()) {                    
+		size_t pos = inputIter->first.find(" ");
+		std::string tempKey = inputIter->first.substr(pos + 1);                           
+        dataIter = dataMap.upper_bound(tempKey);
             if (dataIter != dataMap.begin())
                 dataIter--;
             printResult(inputIter, dataIter);
@@ -110,12 +128,18 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
 
 void printResult(MapIterator& inputIter, MapIterator& dataIter)
 {
-    if (whichDigitString(dataIter->second) == 0 && whichDigitString(inputIter->second) == 0) {				//is int
+	size_t pos = inputIter->first.find(" ");
+	std::string tempKey = inputIter->first.substr(pos + 1);
+
+	if (printErrors(inputIter->second))
+		return ;
+
+    else if (whichDigitString(dataIter->second) == 0 && whichDigitString(inputIter->second) == 0) {				//is int
         long long dataInt = std::strtoll(dataIter->second.c_str(), NULL, 10);
         long long inputInt = std::strtoll(inputIter->second.c_str(), NULL, 10);
         long long res = dataInt * inputInt;
 
-		std::cout << inputIter->first;
+		std::cout << tempKey;
         if (res > INT_MAX)
             std::cout << " Error: too large a number.\n";
 		else
@@ -127,7 +151,7 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
         double inputDouble = std::strtod(inputIter->second.c_str(), NULL);
         double res = dataDouble * inputDouble;
 
-		std::cout << inputIter->first;
+		std::cout << tempKey;
         if (res > INT_MAX)
             std::cout << " Error: too large a number.\n";
         else if (whichDigitString(inputIter->second) == -1)
@@ -135,6 +159,28 @@ void printResult(MapIterator& inputIter, MapIterator& dataIter)
 		else
 			std::cout << " => " << inputIter->second << " => " << res << std::endl;
     }
+}
+
+bool printErrors(const std::string& str)
+{
+	if (str.find("data") != std::string::npos) {
+		std::cout << "Error: No data for this date, data start at 2009-01-02." << std::endl;
+		return true;
+	}
+	else if (str.find("format") != std::string::npos) {
+		std::cout << "Error: wrong format." << std::endl;
+		return true;
+	}
+	else if (str.find("date") != std::string::npos) {
+		std::cout << "Error: invalid date." << std::endl;
+		return true;
+	}
+	else if (str.find("number") != std::string::npos) {
+		std::cout << "Error: not a positive number." << std::endl;
+		return true;
+	}
+	else
+		return false;
 }
 
 int whichDigitString(std::string& str)

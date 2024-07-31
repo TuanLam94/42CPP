@@ -7,7 +7,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    //bien compare output avant de push
+    //bien comparer output avant de push
 
     std::string inputFile(argv[1]);
     std::string dataFile = "data.csv";
