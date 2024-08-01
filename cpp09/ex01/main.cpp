@@ -14,15 +14,14 @@ int main(int argc, char **argv)
 
     std::deque<std::string> deque = parseToDeque(argv[1]);
 
-    printDeque(deque);
+    // printDeque(deque);
 
     if (!checkDeque(deque)) {
         std::cout << "Invalid input" << std::endl;
         return -1;
     }
     else {
-        std::cout << "valid input" << std::endl;
-		RPN(argv[1], deque);
+		RPN(deque);
 	}
 
 	
