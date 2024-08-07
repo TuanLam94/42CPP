@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sys/time.h>
+#include "PmergeMe.hpp"
 
 int main(int argc, char** argv)
 {
@@ -8,23 +9,26 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	(void)argv;
+	if (!errorHandling(argv[1]))
+		return -1;
 
-	struct timeval start, vector, list;
+	struct timeval start, vectortv, listtv;
 	
 	gettimeofday(&start, NULL);
 
+	// std::vector<int> vector = parseVector(argv[1]);
+	// printVector(vector);
 	// vectorSort(argv[1]);
 
-	gettimeofday(&vector, NULL);
-	double vectorTime = (vector.tv_sec - start.tv_sec) * 1e6 + (vector.tv_usec - start.tv_usec);
+	gettimeofday(&vectortv, NULL);
+	double vectorTime = (vectortv.tv_sec - start.tv_sec) * 1e6 + (vectortv.tv_usec - start.tv_usec);
 	std::cout << "Time to process a range of x elements with std::vector : " << vectorTime << "us" << std::endl;
 	
 	
 	// listSort(argv[1]);
 
-	gettimeofday(&list, NULL);
-	double listTime = (list.tv_sec - vector.tv_sec) * 1e6 + (list.tv_usec - vector.tv_usec);
+	gettimeofday(&listtv, NULL);
+	double listTime = (listtv.tv_sec - vectortv.tv_sec) * 1e6 + (listtv.tv_usec - vectortv.tv_usec);
 	std::cout << "Time to process a range of x elements with std::list : " << listTime << "us" << std::endl;
 
 	return 0;
