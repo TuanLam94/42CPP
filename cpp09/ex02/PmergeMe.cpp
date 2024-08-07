@@ -3,8 +3,10 @@
 int checkInput(char* input)
 {
 	std::vector<int> vector;
+	char* errorInput = new char[strlen(input) + 1];
+	std::strcpy(errorInput, input);
 
-	char* token = std::strtok(input, " ");
+	char* token = std::strtok(errorInput, " ");
 	while (token != NULL) {
 		if (!isPositiveInt(token))
 			return -1;
@@ -17,6 +19,9 @@ int checkInput(char* input)
 		if (vector[i] == vector[i - 1])
 			return -2;
 	}
+
+	if (vector.size() <= 1)
+		return -3;
 
 	return 1;
 }
@@ -31,6 +36,9 @@ bool errorHandling(char* input)
 			return false;
 		case -2:
 			std::cout << "Error, input must not contain any duplicates" << std::endl;
+			return false;
+		case -3:
+			std::cout << "Error, input must contain more than one int" << std::endl;
 			return false;
 		case 1:
 			return true;
@@ -54,24 +62,31 @@ bool isPositiveInt(char* token)
 	return true;
 }
 
-// std::vector<int> parseVector(char* input)
-// {
-// 	std::vector<int> vector;
-
-// 	char* token = std::strtok(input, " ");
-// 	while (token != NULL) {
-// 		vector.insert(std::strtoll(token, NULL, 10));
-// 		token = std::strtok(input, " ");
-// 	}
-// 	return vector;
-// }
+void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
+{
+	char* token = std::strtok(input, " ");
+	while (token != NULL) {
+		vector.push_back(std::strtoll(token, NULL, 10));
+		list.push_back(std::strtoll(token, NULL, 10));
+		token = std::strtok(NULL, " ");
+	}
+}
 
 
-// void printVector(std::vector<int> vector)
-// {
-//     std::cout << "\n===VECTOR : ===\n";
+void printVector(std::vector<int> vector)
+{
+    std::cout << "\n=== VECTOR : ===\n";
 
-//     for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
-//         std::cout << "token = " << *it << std::endl;
-//     }
-// }
+    for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
+        std::cout << "token = " << *it << std::endl;
+    }
+}
+
+void printList(std::list<int> list)
+{
+    std::cout << "\n=== LIST : ===\n";
+
+    for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
+        std::cout << "token = " << *it << std::endl;
+    }
+}

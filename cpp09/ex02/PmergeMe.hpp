@@ -13,8 +13,12 @@ bool errorHandling(char* input);
 int checkInput(char* input);
 bool isPositiveInt(char* token);
 
-// std::vector<int> parseVector(char* input);
-// void printVector(std::vector<int> vector);
+void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list);
+
+
+void printVector(std::vector<int> vector);
+void printList(std::list<int> list);
+
 
 
 #endif

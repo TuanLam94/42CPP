@@ -12,12 +12,18 @@ int main(int argc, char** argv)
 	if (!errorHandling(argv[1]))
 		return -1;
 
+	std::vector<int> vector;
+	std::list<int> list;
+	parseVectorList(argv[1], vector, list);
+
 	struct timeval start, vectortv, listtv;
 	
 	gettimeofday(&start, NULL);
 
-	// std::vector<int> vector = parseVector(argv[1]);
-	// printVector(vector);
+	printVector(vector);
+	printList(list);
+
+
 	// vectorSort(argv[1]);
 
 	gettimeofday(&vectortv, NULL);
