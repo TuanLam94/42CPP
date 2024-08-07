@@ -23,8 +23,7 @@ int main(int argc, char** argv)
 	printVector(vector);
 	printList(list);
 
-
-	// vectorSort(argv[1]);
+	// vectorSort(vector);
 
 	gettimeofday(&vectortv, NULL);
 	double vectorTime = (vectortv.tv_sec - start.tv_sec) * 1e6 + (vectortv.tv_usec - start.tv_usec);

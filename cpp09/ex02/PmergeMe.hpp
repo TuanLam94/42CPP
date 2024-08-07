@@ -15,6 +15,7 @@ bool isPositiveInt(char* token);
 
 void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list);
 
+void vectorSort(std::vector<int>& vector);
 
 void printVector(std::vector<int> vector);
 void printList(std::list<int> list);

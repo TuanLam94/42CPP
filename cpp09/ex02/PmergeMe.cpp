@@ -1,5 +1,83 @@
 #include "PmergeMe.hpp"
 
+//VECTOR SORT
+void vectorSort(std::vector<int>& vector)
+{
+	std::vector<std::pair<int, int> > = splitIntoPairs(vector);
+}
+
+std::vector<std::pair<int, int> > splitIntoPairs(const std::vector<int>& vector)
+{
+	std::vector<std:pair<int, int> > pairs;
+	for(size_t i = 0; i < vector.size(); i+= 2) {
+		if (i + 1 < vec.size()) {
+			int first = std::min(vector[i], vector[i + 1]);
+			int second = std::max(vector[i], vector[i + 1]);
+			pairs.push_back(std::make_pair(first, second));
+		}
+		else
+			pairs.push_back(std::make_pair(vector[i], 0));
+	}
+
+	return pairs;
+}
+
+std::vectotr<int> extractHighestValues(const std::vector<std::pair<int, int> >& pairs)
+{
+	std::vector<int> highestValues;
+	for (size_t i = 0; i < pairs.size(); i++) {
+		highestValues.push_back(pair.second);
+	}
+
+	return highestValues;
+}
+
+std::vector<int> recursiveSort(const std::vector<int>& vector) {
+    if (vector.size() <= 1) {
+        return vector;
+    }
+
+    std::vector<int> left(vector.begin(), vector.begin() + vector.size() / 2);
+    std::vector<int> right(vector.begin() + vector.size() / 2, vector.end());
+
+    left = recursiveSort(left);
+    right = recursiveSort(right);
+
+    std::vector<int> result;
+    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(result));
+    return result;
+}
+
+//PARSING
+void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
+{
+	char* token = std::strtok(input, " ");
+	while (token != NULL) {
+		vector.push_back(std::strtoll(token, NULL, 10));
+		list.push_back(std::strtoll(token, NULL, 10));
+		token = std::strtok(NULL, " ");
+	}
+}
+
+//UTILS
+void printVector(std::vector<int> vector)
+{
+    std::cout << "\n=== VECTOR : ===\n";
+
+    for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
+        std::cout << "token = " << *it << std::endl;
+    }
+}
+
+void printList(std::list<int> list)
+{
+    std::cout << "\n=== LIST : ===\n";
+
+    for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
+        std::cout << "token = " << *it << std::endl;
+    }
+
+//ERRORS HANDLING
 int checkInput(char* input)
 {
 	std::vector<int> vector;
@@ -61,32 +139,4 @@ bool isPositiveInt(char* token)
 
 	return true;
 }
-
-void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
-{
-	char* token = std::strtok(input, " ");
-	while (token != NULL) {
-		vector.push_back(std::strtoll(token, NULL, 10));
-		list.push_back(std::strtoll(token, NULL, 10));
-		token = std::strtok(NULL, " ");
-	}
-}
-
-
-void printVector(std::vector<int> vector)
-{
-    std::cout << "\n=== VECTOR : ===\n";
-
-    for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
-        std::cout << "token = " << *it << std::endl;
-    }
-}
-
-void printList(std::list<int> list)
-{
-    std::cout << "\n=== LIST : ===\n";
-
-    for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
-        std::cout << "token = " << *it << std::endl;
-    }
 }
