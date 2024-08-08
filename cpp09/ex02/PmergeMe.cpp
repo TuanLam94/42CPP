@@ -15,9 +15,10 @@ void vectorSort(std::vector<int>& vector)
 	// (void)isOdd;
 
 	int n = vector.size();
+
 	vectorMergeInsertSort(vector, 0, n);
 	// insertOdd(vector, isOdd);
-	printVector(vector);
+	// printVector(vector);
 }
 
 void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
@@ -32,9 +33,13 @@ void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
 	std::vector<int> largerElements(mid - start);
 	std::vector<int> smallerElements(mid - start);
 
+	//first pair them
+
 	for (int i = 0; i < mid - start; i++) {
         int leftElement = vector[start + i];
         int rightElement = vector[mid + i];
+
+	//put them in vectors
         if (leftElement < rightElement) {
             smallerElements[i] = leftElement;
             largerElements[i] = rightElement;
@@ -46,6 +51,12 @@ void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
 
     vectorMergeInsertSort(largerElements, 0, mid - start);
     vectorMergeInsertSort(smallerElements, 0, mid - start);
+
+
+	std::cout << "\nsmaller:";
+	printVector(smallerElements);
+	std::cout << "\nlarger:";
+	printVector(largerElements);
 
     int i = 0, j = 0, k = start;
     while (i < mid - start && j < mid - start) {
@@ -68,17 +79,17 @@ void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
 
 
 
-// void sortEachPair(std::vector<int>& vector)
-// {
-// 	for (size_t i = 0; i < vector.size(); i += 2) {
-// 		int temp;
-// 		if (vector[i] > vector[i + 1]) {
-// 			temp = vector[i];
-// 			vector[i] = vector[i + 1];
-// 			vector[i + 1] = temp;
-// 		}
-// 	}
-// }
+void sortEachPair(std::vector<int>& vector)
+{
+	for (size_t i = 0; i < vector.size(); i += 2) {
+		int temp;
+		if (vector[i] > vector[i + 1]) {
+			temp = vector[i];
+			vector[i] = vector[i + 1];
+			vector[i + 1] = temp;
+		}
+	}
+}
 
 // std::vector<std::pair<int, int> > splitIntoPairs(const std::vector<int>& vector)
 // {
