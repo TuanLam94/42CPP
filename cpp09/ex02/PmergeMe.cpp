@@ -3,50 +3,120 @@
 //VECTOR SORT
 void vectorSort(std::vector<int>& vector)
 {
-	std::vector<std::pair<int, int> > = splitIntoPairs(vector);
+	// int isOdd;
+
+	// if (vector.size() % 2 != 0) {
+	// 	isOdd = vector.back();
+	// 	vector.pop_back();
+	// }
+	// else
+	// 	isOdd = 0;
+
+	// (void)isOdd;
+
+	int n = vector.size();
+	vectorMergeInsertSort(vector, 0, n);
+	// insertOdd(vector, isOdd);
+	printVector(vector);
 }
 
-std::vector<std::pair<int, int> > splitIntoPairs(const std::vector<int>& vector)
+void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
 {
-	std::vector<std:pair<int, int> > pairs;
-	for(size_t i = 0; i < vector.size(); i+= 2) {
-		if (i + 1 < vec.size()) {
-			int first = std::min(vector[i], vector[i + 1]);
-			int second = std::max(vector[i], vector[i + 1]);
-			pairs.push_back(std::make_pair(first, second));
-		}
-		else
-			pairs.push_back(std::make_pair(vector[i], 0));
-	}
+	int n = end - start;
 
-	return pairs;
-}
+	if (n <= 1)
+		return ;
 
-std::vectotr<int> extractHighestValues(const std::vector<std::pair<int, int> >& pairs)
-{
-	std::vector<int> highestValues;
-	for (size_t i = 0; i < pairs.size(); i++) {
-		highestValues.push_back(pair.second);
-	}
+	int mid = start + n /2;
 
-	return highestValues;
-}
+	std::vector<int> largerElements(mid - start);
+	std::vector<int> smallerElements(mid - start);
 
-std::vector<int> recursiveSort(const std::vector<int>& vector) {
-    if (vector.size() <= 1) {
-        return vector;
+	for (int i = 0; i < mid - start; i++) {
+        int leftElement = vector[start + i];
+        int rightElement = vector[mid + i];
+        if (leftElement < rightElement) {
+            smallerElements[i] = leftElement;
+            largerElements[i] = rightElement;
+        } else {
+            smallerElements[i] = rightElement;
+            largerElements[i] = leftElement;
+        }
     }
 
-    std::vector<int> left(vector.begin(), vector.begin() + vector.size() / 2);
-    std::vector<int> right(vector.begin() + vector.size() / 2, vector.end());
+    vectorMergeInsertSort(largerElements, 0, mid - start);
+    vectorMergeInsertSort(smallerElements, 0, mid - start);
 
-    left = recursiveSort(left);
-    right = recursiveSort(right);
+    int i = 0, j = 0, k = start;
+    while (i < mid - start && j < mid - start) {
+        if (smallerElements[i] < largerElements[j]) {
+            vector[k++] = smallerElements[i++];
+        } else {
+            vector[k++] = largerElements[j++];
+        }
+    }
 
-    std::vector<int> result;
-    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(result));
-    return result;
+    while (i < mid - start) {
+        vector[k++] = smallerElements[i++];
+    }
+
+    while (j < mid - start) {
+        vector[k++] = largerElements[j++];
+    }
 }
+
+
+
+
+// void sortEachPair(std::vector<int>& vector)
+// {
+// 	for (size_t i = 0; i < vector.size(); i += 2) {
+// 		int temp;
+// 		if (vector[i] > vector[i + 1]) {
+// 			temp = vector[i];
+// 			vector[i] = vector[i + 1];
+// 			vector[i + 1] = temp;
+// 		}
+// 	}
+// }
+
+// std::vector<std::pair<int, int> > splitIntoPairs(const std::vector<int>& vector)
+// {
+// 	std::vector<std:pair<int, int> > pairs;
+// 	for (size_t i = 0; i < vector.size(); i+= 2) {
+// 			int first = std::min(vector[i], vector[i + 1]);
+// 			int second = std::max(vector[i], vector[i + 1]);
+// 			pairs.push_back(std::make_pair(first, second));
+// 	}
+
+// 	return pairs;
+// }
+
+// std::vectotr<int> extractHighestValues(const std::vector<std::pair<int, int> >& pairs)
+// {
+// 	std::vector<int> highestValues;
+// 	for (size_t i = 0; i < pairs.size(); i++) {
+// 		highestValues.push_back(pair.second);
+// 	}
+
+// 	return highestValues;
+// }
+
+// std::vector<int> recursiveSort(const std::vector<int>& vector) {
+//     if (vector.size() <= 1) {
+//         return vector;
+//     }
+
+//     std::vector<int> left(vector.begin(), vector.begin() + vector.size() / 2);
+//     std::vector<int> right(vector.begin() + vector.size() / 2, vector.end());
+
+//     left = recursiveSort(left);
+//     right = recursiveSort(right);
+
+//     std::vector<int> result;
+//     std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(result));
+//     return result;
+// }
 
 //PARSING
 void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
@@ -76,6 +146,7 @@ void printList(std::list<int> list)
     for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
         std::cout << "token = " << *it << std::endl;
     }
+}
 
 //ERRORS HANDLING
 int checkInput(char* input)
@@ -138,5 +209,4 @@ bool isPositiveInt(char* token)
 		return false;
 
 	return true;
-}
 }

@@ -21,9 +21,9 @@ int main(int argc, char** argv)
 	gettimeofday(&start, NULL);
 
 	printVector(vector);
-	printList(list);
+	// printList(list);
 
-	// vectorSort(vector);
+	vectorSort(vector);
 
 	gettimeofday(&vectortv, NULL);
 	double vectorTime = (vectortv.tv_sec - start.tv_sec) * 1e6 + (vectortv.tv_usec - start.tv_usec);
