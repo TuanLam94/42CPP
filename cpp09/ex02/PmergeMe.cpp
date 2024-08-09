@@ -46,36 +46,16 @@ void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
 	}
 
 	vectorMergeInsertSort(largerElements);
-	// vectorMergeInsertSort(smallerElements);
 
-	//insert smaller elements in larger elements
+	//insert smaller elements in larger elements HERE
 
-	for (size_t i = 0; i < largerElements.size() - 1; i++) {
-		//insert x0 in front of y0 and binary search to insert x1
+	result.insert(0, largerElements[0]);
 
+	for (size_t i = 0; i < smallerElements.size() - 1; i++) {
+		if (i = 0)
+			result.
 	}
 }
-
-// std::vector<int> sortEachPair(std::vector<int>& vector)
-// {
-// 	std::vector<int> largerElements;
-// 	std::vector<int> smallerElements;
-
-// 	for (size_t i = 0; i < vector.size() - 1; i++) {
-// 		if (vector[i] > vector[i + 1]) {
-// 			largerElements.push_back(vector[i]);
-// 			smallerElements.push_back(vector[i + 1]);
-// 		}
-// 		else {
-// 			largerElements.push_back(vector[i + 1]);
-// 			smallerElements.push_back(vector[i]);
-// 		}
-// 	}
-
-// 	sortEachPair(largerElements);
-
-// 	return largerElements;
-// }
 
 //PARSING
 void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
