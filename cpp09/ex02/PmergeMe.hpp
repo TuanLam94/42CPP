@@ -16,12 +16,13 @@ bool	isPositiveInt(char* token);
 void	parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list);
 
 void	vectorSort(std::vector<int>& vector);
-void sortEachPair(std::vector<int>& vector);
 void	vectorMergeInsertSort(std::vector<int>& vector, int start, int end);
 
 void	printVector(std::vector<int> vector);
 void	printList(std::list<int> list);
 
 
+
+// std::vector<int>	sortEachPair(std::vector<int>& vector);
 
 #endif
