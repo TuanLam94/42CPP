@@ -10,9 +10,11 @@ int main(int argc, char** argv)
 	if (!errorHandling(argv[1]))
 		return -1;
 
-	PmergeMe<std::vector<int> > Pmerge(argv[1]);
+	PmergeMeV PmergeMeV(argv[1]);
+	PmergeMeV.sort();
 
-	Pmerge.sort();
+	PmergeMeL PmergeMeL(argv[1]);
+	PmergeMeL.listSort();
 
 	return 0;
 }

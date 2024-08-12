@@ -2,8 +2,9 @@
 #define PMERGEME_HPP
 
 #include <iostream>
+#include <sstream>
 #include <vector>
-#include <deque>
+#include <list>
 #include <algorithm>
 #include <ctime>
 #include <cstring>
@@ -11,35 +12,58 @@
 #include <utility>
 #include <iterator>
 
-template <typename Container>
-class PmergeMe
+class PmergeMeV
 {
 	private:
-		PmergeMe();
-		PmergeMe(const PmergeMe &rhs);
-		PmergeMe &operator = (const PmergeMe &rhs);
+		PmergeMeV();
+		PmergeMeV(const PmergeMeV &rhs);
+		PmergeMeV &operator = (const PmergeMeV &rhs);
 
-		Container	_container;
-		Container	_output;
+		std::vector<int>	_vector;
+		std::vector<int>	_output;
 		int				_odd;
 
-		std::vector<std::pair<int, int> > pairElements(Container& container);
+		std::vector<std::pair<int, int> > pairElements();
 		void sortPairs(std::vector<std::pair<int, int> > &pairVector);
 		int binarySearch(int a);
+
 	public:
-		PmergeMe(char* input);
-		~PmergeMe();
+		PmergeMeV(char* input);
+		~PmergeMeV();
 		void sort();
+};
+
+class PmergeMeL
+{
+	private:
+		PmergeMeL();
+		PmergeMeL(const PmergeMeL &rhs);
+		PmergeMeL &operator = (const PmergeMeL &rhs);
+
+		std::list<int>	_list;
+		std::list<int>	_output;
+		int				_odd;
+
+		std::list<std::pair<int, int> > listPairElements();
+		void listSortPairs(std::list<std::pair<int, int> > &pairList);
+		int listBinarySearch(int a);
+
+	public:
+		PmergeMeL(char* input);
+		~PmergeMeL();
+		void listSort();
 };
 
 std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p);
 
-template <typename T>
-void printContainer(T container);
+std::vector<int> generateJacobsthalSequence(int limit);
 
-int checkInput(char* input);
-bool errorHandling(char* input);
-bool isPositiveInt(char* token);
+template <typename T>
+void	printContainer(T container);
+
+int		checkInput(char* input);
+bool	errorHandling(char* input);
+bool	isPositiveInt(char* token);
 
 
 #endif
