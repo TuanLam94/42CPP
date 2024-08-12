@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <list>
+#include <deque>
 #include <algorithm>
 #include <ctime>
 #include <cstring>
@@ -37,7 +37,6 @@ std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p);
 template <typename T>
 void printContainer(T container);
 
-void printVector(std::vector<int> vector);
 int checkInput(char* input);
 bool errorHandling(char* input);
 bool isPositiveInt(char* token);

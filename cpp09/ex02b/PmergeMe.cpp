@@ -17,11 +17,6 @@ PmergeMe<Container>::PmergeMe(char* input)
 		_container.push_back(std::strtoll(token, NULL, 10));
 		token = std::strtok(NULL, " ");
 	}
-
-	if (_container.size() % 2 != 0)
-		_odd = _container.back();
-	else 
-		_odd = -1;
 }
 
 template <typename Container>
@@ -43,15 +38,20 @@ void PmergeMe<Container>::sort()
 {
 	// std::clock_t start = std::clock();
 
+	if (_container.size() % 2 != 0)
+		_odd = _container.back();
+	else 
+		_odd = -1;
+
 	std::vector<std::pair<int, int> > pairVector = pairElements(_container);
 
 	sortPairs(pairVector);
 
 	_output.push_back(pairVector[pairVector.size() - 1].second);
 
-	
+	printContainer(pairVector);
+	printContainer(_output);
 
-	printVector(_output);
 }
 
 template <typename Container>
@@ -72,10 +72,8 @@ std::vector<std::pair<int, int> > PmergeMe<Container>::pairElements(Container& c
 template <typename Container>
 void PmergeMe<Container>::sortPairs(std::vector<std::pair<int, int> > &pairVector)
 {
-	if (pairVector.size() <= 1) {
-		printContainer(pairVector);
+	if (pairVector.size() <= 1)
 		return;
-	}
 	size_t mid = pairVector.size() / 2;
 
 	std::vector<std::pair<int, int> > leftSide(pairVector.begin(), pairVector.begin() + mid);
@@ -85,8 +83,6 @@ void PmergeMe<Container>::sortPairs(std::vector<std::pair<int, int> > &pairVecto
 	sortPairs(rightSide);
 
 	size_t i = 0, j = 0, k = 0;
-
-	printContainer(pairVector);
 
 	while (i < leftSide.size() && j < rightSide.size()) {
 		if (leftSide[i].second < rightSide[j].second)
@@ -123,6 +119,21 @@ int PmergeMe<Container>::binarySearch(int a)
 	return -1;
 }
 
+std::vector<int> generateJacobsthalSequence(int limit)
+{
+	std::vector<int> jacob;
+	jacob.push_back(0);
+	jacob.push_back(1);
+
+	int i = 2;
+	for (int j = 0; j < limit; j++) {
+		int next = jacob[i - 1] + 2 * jacob[i - 2];
+		jacob.push_back(next);
+	}
+
+	return jacob;
+}
+
 template <typename T>
 void printContainer(T container)
 {
@@ -135,18 +146,8 @@ void printContainer(T container)
 	std::cout << std::endl;
 }
 
-void printVector(std::vector<int> vector)
-{
-	std::cout << "\n=== Vector : ===\n";
-
-	std::vector<int>::const_iterator it;
-	for (it = vector.begin(); it != vector.end(); *it++) {
-		std::cout << *it << ' ';
-	}
-	std::cout << std::endl;
-}
-
-std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p)
+std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p)t(
+        make_
 {
 	os << '(' << p.first << ", " << p.second << ')';
 	return os;
@@ -221,7 +222,7 @@ bool isPositiveInt(char* token)
 }
 
 template class PmergeMe<std::vector<int> >;
-// template class PmergeMe<std::list<int> >;
+template class PmergeMe<std::deque<int> >;
 
 // //UTILS
 // void printVector(std::vector<int> vector)
