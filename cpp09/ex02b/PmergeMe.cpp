@@ -47,7 +47,11 @@ void PmergeMe<Container>::sort()
 
 	sortPairs(pairVector);
 
-	printContainer(pairVector);
+	_output.push_back(pairVector[pairVector.size() - 1].second);
+
+	
+
+	printVector(_output);
 }
 
 template <typename Container>
@@ -68,8 +72,10 @@ std::vector<std::pair<int, int> > PmergeMe<Container>::pairElements(Container& c
 template <typename Container>
 void PmergeMe<Container>::sortPairs(std::vector<std::pair<int, int> > &pairVector)
 {
-	if (pairVector.size() <= 1)
+	if (pairVector.size() <= 1) {
+		printContainer(pairVector);
 		return;
+	}
 	size_t mid = pairVector.size() / 2;
 
 	std::vector<std::pair<int, int> > leftSide(pairVector.begin(), pairVector.begin() + mid);
@@ -124,6 +130,17 @@ void printContainer(T container)
 
 	typename T::const_iterator it;
 	for (it = container.begin(); it != container.end(); ++it) {
+		std::cout << *it << ' ';
+	}
+	std::cout << std::endl;
+}
+
+void printVector(std::vector<int> vector)
+{
+	std::cout << "\n=== Vector : ===\n";
+
+	std::vector<int>::const_iterator it;
+	for (it = vector.begin(); it != vector.end(); *it++) {
 		std::cout << *it << ' ';
 	}
 	std::cout << std::endl;
