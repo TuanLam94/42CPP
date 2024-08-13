@@ -62,10 +62,10 @@ void PmergeMeV::sort()
 		}
 	}
 
-	if (_odd != -1) {
-		int index = binarySearch(_odd);
-		_output.insert(_output.begin() + index, _odd);
-	}
+	// if (_odd != -1) {
+	// 	int index = binarySearch(_odd);
+	// 	_output.insert(_output.begin() + index, _odd);
+	// }
 
 	// printContainer(pairVector);
 	printContainer(_output);
