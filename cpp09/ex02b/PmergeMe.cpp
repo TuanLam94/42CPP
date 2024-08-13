@@ -43,6 +43,7 @@ void PmergeMeV::sort()
 	else 
 		_odd = -1;
 
+	
 	std::vector<std::pair<int, int> > pairVector = pairElements();
 
 	std::vector<int> jacobsthal = generateJacobsthalSequence(pairVector.size());
@@ -62,21 +63,19 @@ void PmergeMeV::sort()
 		}
 	}
 
-	// if (_odd != -1) {
-	// 	int index = binarySearch(_odd);
-	// 	_output.insert(_output.begin() + index, _odd);
-	// }
+	if (_odd != -1) {
+		int index = binarySearch(_odd);
+		_output.insert(_output.begin() + index, _odd);
+	}
 
-	// printContainer(pairVector);
 	printContainer(_output);
-
 }
 
 std::vector<std::pair<int, int> > PmergeMeV::pairElements()
 {
 	std::vector<std::pair<int, int> > pairVector;
 
-	for (size_t i = 0; i < _vector.size(); i += 2) {
+	for (size_t i = 0; i < _vector.size() - 1; i += 2) {
 		if (_vector[i] > _vector[i + 1])
 			std::swap(_vector[i], _vector[i + 1]);
 
