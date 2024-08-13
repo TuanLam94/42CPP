@@ -13,8 +13,8 @@ int main(int argc, char** argv)
 	PmergeMeV PmergeMeV(argv[1]);
 	PmergeMeV.sort();
 
-	PmergeMeL PmergeMeL(argv[1]);
-	PmergeMeL.listSort();
+	// PmergeMeL PmergeMeL(argv[1]);
+	// PmergeMeL.listSort();
 
 	return 0;
 }

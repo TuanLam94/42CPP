@@ -56,7 +56,7 @@ class PmergeMeL
 
 std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p);
 
-std::vector<int> generateJacobsthalSequence(int limit);
+std::vector<int> generateJacobsthalSequence(size_t size);
 
 template <typename T>
 void	printContainer(T container);

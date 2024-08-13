@@ -33,6 +33,11 @@ void PmergeMeV::sort()
 {
 	// std::clock_t start = std::clock();
 
+	if (_vector.size() == 1) {
+		_output.push_back(_vector.back());
+		//end implementation
+	}
+
 	if (_vector.size() % 2 != 0)
 		_odd = _vector.back();
 	else 
@@ -40,11 +45,29 @@ void PmergeMeV::sort()
 
 	std::vector<std::pair<int, int> > pairVector = pairElements();
 
+	std::vector<int> jacobsthal = generateJacobsthalSequence(pairVector.size());
+
 	sortPairs(pairVector);
 
-	_output.push_back(pairVector[pairVector.size() - 1].second);
+	_output.push_back(pairVector[0].first);
 
-	printContainer(pairVector);
+	for (size_t i = 0; i < pairVector.size(); i++) {
+		_output.push_back(pairVector[i].second);
+	}
+
+	for (size_t i = 0; i < jacobsthal.size(); i++) {
+		if (static_cast<size_t>(jacobsthal[i] - 1) < pairVector.size()) {
+			int index = binarySearch(pairVector[jacobsthal[i] - 1].first);
+			_output.insert(_output.begin() + index, pairVector[jacobsthal[i] - 1].first);
+		}
+	}
+
+	if (_odd != -1) {
+		int index = binarySearch(_odd);
+		_output.insert(_output.begin() + index, _odd);
+	}
+
+	// printContainer(pairVector);
 	printContainer(_output);
 
 }
@@ -111,19 +134,29 @@ int PmergeMeV::binarySearch(int a)
 	return -1;
 }
 
-std::vector<int> generateJacobsthalSequence(int limit)
+std::vector<int> generateJacobsthalSequence(size_t size)
 {
-	std::vector<int> jacob;
-	jacob.push_back(0);
-	jacob.push_back(1);
+    std::vector<int> index;
+    int jacobsthalSequence[size + 1];
 
-	int i = 2;
-	for (int j = 0; j < limit; j++) {
-		int next = jacob[i - 1] + 2 * jacob[i - 2];
-		jacob.push_back(next);
-	}
+    jacobsthalSequence[0] = 0;
+    jacobsthalSequence[1] = 1;
+    int lastJacobsthalNumber = 2;
 
-	return jacob;
+    for (size_t i = 2; index.size() < size; i++)
+    {
+        jacobsthalSequence[i] = jacobsthalSequence[i - 1] + 2 * jacobsthalSequence[i - 2];
+
+		if (i != 2)
+			index.push_back(jacobsthalSequence[i]);
+
+        for (int j = jacobsthalSequence[i] - 1; j > lastJacobsthalNumber; j--) {
+            index.push_back(j);
+		}
+
+        lastJacobsthalNumber = jacobsthalSequence[i];
+    }
+    return (index);
 }
 
 template <typename T>
@@ -179,6 +212,11 @@ PmergeMeL::~PmergeMeL() {}
 void PmergeMeL::listSort()
 {
 	// std::clock_t start = std::clock();
+
+	if (_list.size() == 1) {
+		_output.push_back(_list.back());
+		//end implementation
+	}
 
 	if (_list.size() % 2 != 0)
 		_odd = _list.back();
@@ -258,7 +296,7 @@ int PmergeMeL::listBinarySearch(int a)
 {
 	int start = 0;
 	int end = _list.size() - 1;
-	
+
 	while (start <= end) {
 		int mid = (start + end) / 2;
 		std::list<int>::iterator itMid = _list.begin();
