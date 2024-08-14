@@ -1,90 +1,408 @@
 #include "PmergeMe.hpp"
 
-//VECTOR SORT
-void vectorSort(std::vector<int>& vector)
+PmergeMeV::PmergeMeV() {}
+
+PmergeMeV::PmergeMeV(const PmergeMeV& rhs)
 {
-	int isOdd;
-
-	if (vector.size() % 2 != 0) {
-		isOdd = vector.back();
-		vector.pop_back();
-	}
-	else
-		isOdd = 0;
-
-	(void)isOdd;
-
-	int n = vector.size();
-	sortEachPair(vector);
-	vectorMergeInsertSort(vector, 0, n);
-
-
-	// insertOdd(vector, isOdd);
-	printVector(vector);
+	*this = rhs;
 }
 
-void vectorMergeInsertSort(std::vector<int>& vector, int start, int end)
+PmergeMeV::PmergeMeV(char* input)
 {
-	std::vector<int> largerElements;
-	std::vector<int> smallerElements;
+    std::istringstream iss(input);
+    int value;
 
-	std::vector<int> result;
+    while (iss >> value) {
+        _vector.push_back(value);
+    }
+}
 
-	if (vector.size() <= 1)
+PmergeMeV& PmergeMeV::operator = (const PmergeMeV& rhs)
+{
+	if (this != &rhs) {
+		_vector = rhs._vector;
+		_odd = rhs._odd;
+	}
+		
+	return *this;
+}
+
+PmergeMeV::~PmergeMeV() {}
+
+double PmergeMeV::getTime()
+{
+	return _time;
+}
+
+std::vector<int> PmergeMeV::getOutput()
+{
+	return _output;
+}
+
+void PmergeMeV::printOutputVector()
+{
+	std::cout << "After (vector): ";
+
+	for (std::vector<int>::iterator it = _output.begin(); it != _output.end(); ++it) {
+		std::cout << *it << ' ';
+	}
+
+	std::cout << std::endl;
+}
+
+void PmergeMeV::sort()
+{
+	std::clock_t start = std::clock();
+
+	if (_vector.size() == 1) {
+		_output.push_back(_vector.back());
+		std::clock_t end = std::clock();
+		_time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 		return ;
+	}
 
-	//pair elements until one pair remaining
-	for (size_t i = 0; i < vector.size() - 1; i++) {
-		if (vector[i] > vector[i + 1]) {
-			largerElements.push_back(vector[i]);
-			smallerElements.push_back(vector[i + 1]);
-		}
-		else {
-			largerElements.push_back(vector[i + 1]);
-			smallerElements.push_back(vector[i]);
+	if (_vector.size() % 2 != 0) {
+		_odd = _vector.back(); 
+		_vector.pop_back();
+	}
+	else 
+		_odd = -1;
+
+	std::vector<std::pair<int, int> > pairVector = pairElements();
+	std::vector<int> jacobsthal = generateJacobsthalSequence(_vector.size());
+
+	sortPairs(pairVector);
+
+	_output.push_back(pairVector[0].first);
+
+	for (size_t i = 0; i < pairVector.size(); i++) {
+		_output.push_back(pairVector[i].second);
+	}
+
+	for (size_t i = 0; i < jacobsthal.size(); i++) {
+		if (static_cast<size_t>(jacobsthal[i] - 1) < pairVector.size()) {
+			int index = binarySearch(pairVector[jacobsthal[i] - 1].first);
+			_output.insert(_output.begin() + index, pairVector[jacobsthal[i] - 1].first);
 		}
 	}
 
-	vectorMergeInsertSort(largerElements);
+	if (_odd != -1) {
+		int index = binarySearch(_odd);
+		_output.insert(_output.begin() + index, _odd);
+	}
 
-	//insert smaller elements in larger elements HERE
+	std::clock_t end = std::clock();
+	_time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+}
 
-	result.insert(0, largerElements[0]);
+std::vector<std::pair<int, int> > PmergeMeV::pairElements()
+{
+	std::vector<std::pair<int, int> > pairVector;
 
-	for (size_t i = 0; i < smallerElements.size() - 1; i++) {
-		if (i = 0)
-			result.
+	for (size_t i = 0; i < _vector.size() - 1; i += 2) {
+		if (_vector[i] > _vector[i + 1])
+			std::swap(_vector[i], _vector[i + 1]);
+
+		pairVector.push_back(std::make_pair(_vector[i], _vector[i + 1]));
+	}
+
+	return pairVector;
+}
+
+void PmergeMeV::sortPairs(std::vector<std::pair<int, int> > &pairVector)
+{
+	if (pairVector.size() <= 1)
+		return;
+	
+	size_t mid = pairVector.size() / 2;
+
+	std::vector<std::pair<int, int> > leftSide(pairVector.begin(), pairVector.begin() + mid);
+	std::vector<std::pair<int, int> > rightSide(pairVector.begin() + mid, pairVector.end());
+
+	sortPairs(leftSide);
+	sortPairs(rightSide);
+
+	size_t i = 0, j = 0, k = 0;
+
+	while (i < leftSide.size() && j < rightSide.size()) {
+		if (leftSide[i].second < rightSide[j].second)
+			pairVector[k++] = leftSide[i++];
+		else
+			pairVector[k++] = rightSide[j++];
+	}
+
+	while (i < leftSide.size()) {
+		pairVector[k++] = leftSide[i++];
+	}
+
+	while (j < rightSide.size()) {
+		pairVector[k++] = rightSide[j++];
 	}
 }
 
-//PARSING
-void parseVectorList(char* input, std::vector<int>& vector, std::list<int>& list)
+int PmergeMeV::binarySearch(int a)
 {
-	char* token = std::strtok(input, " ");
-	while (token != NULL) {
-		vector.push_back(std::strtoll(token, NULL, 10));
-		list.push_back(std::strtoll(token, NULL, 10));
-		token = std::strtok(NULL, " ");
+	int start = 0;
+	int end = _output.size() - 1;
+
+	while (start <= end) {
+		int mid = (start + end) / 2;
+		if (_output[mid] == a)
+			return mid;
+		else if (a > _output[mid])
+			start = mid + 1;
+		else
+			end = mid - 1;
+	}
+
+	return start;
+}
+
+std::vector<int> PmergeMeV::generateJacobsthalSequence(size_t size)
+{
+    std::vector<int> index;
+    int jacobsthalSequence[size + 1];
+
+    jacobsthalSequence[0] = 0;
+    jacobsthalSequence[1] = 1;
+    int last = 2;
+
+    for (size_t i = 2; index.size() < size; i++)
+    {
+        jacobsthalSequence[i] = jacobsthalSequence[i - 1] + 2 * jacobsthalSequence[i - 2];
+
+		if (i != 2)
+			index.push_back(jacobsthalSequence[i]);
+
+        for (int j = jacobsthalSequence[i] - 1; j > last; j--) {
+            index.push_back(j);
+		}
+
+        last = jacobsthalSequence[i];
+    }
+    return (index);
+}
+
+template <typename T>
+void printContainer(T container)
+{
+	typename T::const_iterator it;
+	for (it = container.begin(); it != container.end(); ++it) {
+		std::cout << *it << ' ';
 	}
 }
 
-//UTILS
-void printVector(std::vector<int> vector)
+std::ostream& operator << (std::ostream& os, const std::pair<int, int>& p)
 {
-    std::cout << "\n=== VECTOR : ===\n";
+	os << '(' << p.first << ", " << p.second << ')';
+	return os;
+}
 
-    for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
-        std::cout << "token = " << *it << std::endl;
+
+//	===========		LIST IMPLEMENTATION		==================
+
+PmergeMeL::PmergeMeL() {}
+
+PmergeMeL::PmergeMeL(const PmergeMeL& rhs)
+{
+	*this = rhs;
+}
+
+PmergeMeL::PmergeMeL(char* input)
+{
+    std::istringstream iss(input);
+    int value;
+
+    while (iss >> value) {
+        _list.push_back(value);
     }
 }
 
-void printList(std::list<int> list)
+PmergeMeL& PmergeMeL::operator = (const PmergeMeL& rhs)
 {
-    std::cout << "\n=== LIST : ===\n";
+	if (this != &rhs) {
+		_list = rhs._list;
+		_odd = rhs._odd;
+	}
+		
+	return *this;
+}
 
-    for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
-        std::cout << "token = " << *it << std::endl;
+PmergeMeL::~PmergeMeL() {}
+
+double PmergeMeL::getTime()
+{
+	return _time;
+}
+
+std::list<int> PmergeMeL::getOutput()
+{
+	return _output;
+}
+
+void PmergeMeL::printOutputList()
+{
+	std::cout << "After (list): ";
+
+	for (std::list<int>::iterator it = _output.begin(); it != _output.end(); ++it) {
+		std::cout << *it << ' ';
+	}
+
+	std::cout << std::endl;
+}
+
+void PmergeMeL::listSort()
+{
+	std::clock_t start = std::clock();
+
+	if (_list.size() == 1) {
+		_output.push_back(_list.back());
+		std::clock_t end = std::clock();
+		_time = static_cast<double> (end - start) / CLOCKS_PER_SEC;
+		return ;
+	}
+
+	if (_list.size() % 2 != 0) {
+		_odd = _list.back();
+		_list.pop_back();
+	}
+	else 
+		_odd = -1;
+
+	std::list<std::pair<int, int> > pairList = listPairElements();
+	std::list<int> jacobsthal = generateJacobsthalSequence(_list.size());
+
+	listSortPairs(pairList);
+
+	_output.push_back(pairList.front().first);
+
+	for (std::list<std::pair<int, int> >::iterator it = pairList.begin(); it != pairList.end(); it++) {
+		_output.push_back(it->second);
+	}
+
+	for (std::list<int>::iterator it = jacobsthal.begin(); it != jacobsthal.end(); it++) {
+		if (static_cast<size_t>(*it - 1) < pairList.size()) {
+			std::list<std::pair<int, int> >::iterator pairIt = pairList.begin();
+			std::advance(pairIt, *it -1);
+			int index = listBinarySearch(pairIt->first);
+			std::list<int>::iterator outputIt = _output.begin();
+			std::advance(outputIt, index);
+			_output.insert(outputIt, pairIt->first);
+		}
+	}
+
+	if (_odd != -1) {
+		int index = listBinarySearch(_odd);
+		std::list<int>::iterator outputIt = _output.begin();
+		std::advance(outputIt, index);
+		_output.insert(outputIt, _odd);
+	}
+
+	std::clock_t end = std::clock();
+	_time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+}
+
+std::list<std::pair<int, int> > PmergeMeL::listPairElements()
+{
+	std::list<std::pair<int, int> > pairList;
+	std::list<int>::iterator it = _list.begin();
+
+	while (it != _list.end()) {
+		std::list<int>::iterator next = it;
+		std::advance(next, 1);
+		if (next == _list.end())
+			break;
+		
+		if (*it > *next)
+			std::swap(*it, *next);
+
+		pairList.push_back(std::make_pair(*it, *next));
+
+		std::advance(it, 2);
+	}
+
+	return pairList;
+}
+
+void PmergeMeL::listSortPairs(std::list<std::pair<int, int> > &pairList)
+{
+	if (pairList.size() <= 1)
+		return;
+
+    std::list<std::pair<int, int> >::iterator mid = pairList.begin();
+    std::advance(mid, pairList.size() / 2);
+
+	std::list<std::pair<int, int> > leftSide(pairList.begin(), mid);
+	std::list<std::pair<int, int> > rightSide(mid, pairList.end());
+
+	listSortPairs(leftSide);
+	listSortPairs(rightSide);
+
+	pairList.clear();
+
+	std::list<std::pair<int, int> >::iterator leftIt = leftSide.begin();
+	std::list<std::pair<int, int> >::iterator rightIt = rightSide.begin();
+
+
+	while (leftIt != leftSide.end() && rightIt != rightSide.end()) {
+		if (leftIt->second < rightIt->second)
+			pairList.push_back(*leftIt++);
+		else
+			pairList.push_back(*rightIt++);
+	}
+
+	while (leftIt != leftSide.end()) {
+		pairList.push_back(*leftIt++);
+	}
+
+	while (rightIt != rightSide.end()) {
+		pairList.push_back(*rightIt++);
+	}
+}
+
+int PmergeMeL::listBinarySearch(int a)
+{
+	int start = 0;
+	int end = _output.size() - 1;
+
+	while (start <= end) {
+		int mid = (start + end) / 2;
+		std::list<int>::iterator itMid = _output.begin();
+		std::advance(itMid, mid);
+		if (*itMid == a)
+			return mid;
+		else if (a > *itMid)
+			start = mid + 1;
+		else
+			end = mid - 1;
+	}
+
+	return start;
+}
+
+std::list<int> PmergeMeL::generateJacobsthalSequence(size_t size)
+{
+	std::list<int> index;
+	int jacobsthalSequence[size + 1];
+
+	jacobsthalSequence[0] = 0;
+    jacobsthalSequence[1] = 1;
+    int last = 2;
+
+    for (size_t i = 2; index.size() < size; i++)
+    {
+        jacobsthalSequence[i] = jacobsthalSequence[i - 1] + 2 * jacobsthalSequence[i - 2];
+
+		if (i != 2)
+			index.push_back(jacobsthalSequence[i]);
+
+        for (int j = jacobsthalSequence[i] - 1; j > last; j--) {
+            index.push_back(j);
+		}
+
+        last = jacobsthalSequence[i];
     }
+    return (index);
 }
 
 //ERRORS HANDLING
@@ -96,21 +414,26 @@ int checkInput(char* input)
 
 	char* token = std::strtok(errorInput, " ");
 	while (token != NULL) {
-		if (!isPositiveInt(token))
+		if (!isPositiveInt(token)) {
+
 			return -1;
+		}
 		vector.push_back(std::strtoll(token, NULL, 10));
 		token = std::strtok(NULL, " ");
 	}
 
 	std::sort(vector.begin(), vector.end());
 	for (size_t i = 1; i < vector.size(); i++) {
-		if (vector[i] == vector[i - 1])
+		if (vector[i] == vector[i - 1]) {
+
 			return -2;
+		}
 	}
 
 	if (vector.size() <= 1)
+	{
 		return -3;
-
+	}
 	return 1;
 }
 
@@ -149,3 +472,25 @@ bool isPositiveInt(char* token)
 
 	return true;
 }
+
+// template class PmergeMe<std::vector<int> >;
+// template class PmergeMe<std::deque<int> >;
+
+// //UTILS
+// void printVector(std::vector<int> vector)
+// {
+//     std::cout << "\n=== VECTOR : ===\n";
+
+//     for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
+//         std::cout << "token = " << *it << std::endl;
+//     }
+// }
+
+// void printList(std::list<int> list)
+// {
+//     std::cout << "\n=== LIST : ===\n";
+
+//     for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
+//         std::cout << "token = " << *it << std::endl;
+//     }
+// }

@@ -1,5 +1,3 @@
-#include <iostream>
-#include <sys/time.h>
 #include "PmergeMe.hpp"
 
 int main(int argc, char** argv)
@@ -12,29 +10,22 @@ int main(int argc, char** argv)
 	if (!errorHandling(argv[1]))
 		return -1;
 
-	std::vector<int> vector;
-	std::list<int> list;
-	parseVectorList(argv[1], vector, list);
+	PmergeMeV PmergeMeV(argv[1]);
+	PmergeMeV.sort();
 
-	struct timeval start, vectortv, listtv;
-	
-	gettimeofday(&start, NULL);
+	PmergeMeL PmergeMeL(argv[1]);
+	PmergeMeL.listSort();
 
-	printVector(vector);
-	// printList(list);
+	std::cout << "Before: " << argv[1] << std::endl;
+	PmergeMeV.printOutputVector();
 
-	vectorSort(vector);
+	std::cout << "After (list): ";
+	PmergeMeL.printOutputList();
 
-	gettimeofday(&vectortv, NULL);
-	double vectorTime = (vectortv.tv_sec - start.tv_sec) * 1e6 + (vectortv.tv_usec - start.tv_usec);
-	std::cout << "Time to process a range of x elements with std::vector : " << vectorTime << "us" << std::endl;
-	
-	
-	// listSort(argv[1]);
-
-	gettimeofday(&listtv, NULL);
-	double listTime = (listtv.tv_sec - vectortv.tv_sec) * 1e6 + (listtv.tv_usec - vectortv.tv_usec);
-	std::cout << "Time to process a range of x elements with std::list : " << listTime << "us" << std::endl;
+	std::cout << "Time to process a range of " << PmergeMeV.getOutput().size() 
+		<< " elements with std::vector<int> : " << PmergeMeV.getTime() << std::endl;
+	std::cout << "Time to process a range of " << PmergeMeL.getOutput().size() 
+		<< " elements with std::vector<int> : " << PmergeMeL.getTime() << std::endl;
 
 	return 0;
 }
