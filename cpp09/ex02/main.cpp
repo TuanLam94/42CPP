@@ -18,8 +18,6 @@ int main(int argc, char** argv)
 
 	std::cout << "Before: " << argv[1] << std::endl;
 	PmergeMeV.printOutputVector();
-
-	std::cout << "After (list): ";
 	PmergeMeL.printOutputList();
 
 	std::cout << "Time to process a range of " << PmergeMeV.getOutput().size() 
