@@ -1,8 +1,8 @@
 NAME = unecessaryviolence
 
-CC = c++ -std=c++98
+CC = c++
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = main.cpp \
 		HumanA.cpp \

@@ -107,14 +107,6 @@ void bitcoinExchange(std::multimap<std::string, std::string>& inputMap, std::mul
     MapIterator inputIter = inputMap.begin();
     MapIterator dataIter = dataMap.begin();
 
-	// std::cout << "Input Map : \n";
-	// printMap(inputMap);
-	// std::cout << "Data Map : \n";
-	// printMap(dataMap);
-
-	// (void)inputIter;
-	// (void)dataIter;
-
     while (inputIter != inputMap.end()) {                    
 		size_t pos = inputIter->first.find(" ");
 		std::string tempKey = inputIter->first.substr(pos + 1);                           
@@ -250,66 +242,3 @@ std::string trim(std::string str)
 
 	return (str.substr(start, end - start));
 }
-
-// double AbsDouble(double num)
-// {
-//     if (num < 0)
-//         return -num;
-//     return num;
-// }
-
-// bool keyCheck(std::string& key)
-// {
-//     for (int i = 0; i < 4; i++) {
-//         if (!isdigit(key[i]))
-//             return false;
-//     }
-//     if (key[4] != '-' && key[7] != '-')
-//         return false;
-
-//     char *endptr;
-
-//     std::string month = key.substr(5, 2);
-//     for (int i = 0; i < 2; i++) {
-//         if (!isdigit(month[i]))
-//             return false;
-//     }
-//     if (strtoll(month.c_str(), &endptr, 10) > 12)
-//         return false;
-    
-//     std::string day = key.substr(8, 2);
-//     for (int i = 0; i < 2; i++) {
-//         if (!isdigit(day[i])) {
-//             return false;
-//         }
-//     }
-//     if (strtoll(month.c_str(), &endptr, 10) > 31)
-//         return false;
-
-//     return true;
-// }
-
-// void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
-// {
-//     MapIterator dataIter = dataMap.begin();
-
-//     if (!isValidDate(inputIter->first)) {
-//         std::cout << inputIter->first << ": Invalid date\n";
-//     }
-//     else {
-//         size_t pos = inputIter->first.find(" ");
-//         std::cout << inputIter->first.substr(0, pos) << " No data for this date, data start at " << dataIter->first << std::endl;
-//     }
-// }
-
-// bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter)
-// {
-//     MapIterator dataIter = dataMap.begin();
-
-//     while (dataIter != dataMap.end()) {
-//         if (dataIter->first <= inputIter->first)
-//             return false;
-//         dataIter++;
-//     }
-//     return true;
-// }

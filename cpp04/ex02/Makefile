@@ -2,7 +2,7 @@ NAME = ex02
 
 CC = clang++ -std=c++98
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = main.cpp \
 		Animal.cpp \

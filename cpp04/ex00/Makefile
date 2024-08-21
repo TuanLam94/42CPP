@@ -1,8 +1,8 @@
 NAME = ex00
 
-CC = c++ -std=c++98
+CC = c++
 
-CFLAGS = -Wall -Werror -Wextra -pedantic
+CFLAGS = -Wall -Werror -Wextra -std=c++98 -pedantic
 
 SRC = main.cpp \
 		Animal.cpp \

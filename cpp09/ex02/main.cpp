@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	std::cout << "Time to process a range of " << PmergeMeV.getOutput().size() 
 		<< " elements with std::vector<int> : " << PmergeMeV.getTime() << std::endl;
 	std::cout << "Time to process a range of " << PmergeMeL.getOutput().size() 
-		<< " elements with std::vector<int> : " << PmergeMeL.getTime() << std::endl;
+		<< " elements with std::list<int> : " << PmergeMeL.getTime() << std::endl;
 
 	return 0;
 }

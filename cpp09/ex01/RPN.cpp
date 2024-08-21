@@ -27,6 +27,8 @@ int checkDeque(std::deque<std::string> deque)
     it++;
 
     while (it != deque.end()) {
+		if (!isStringDigit(*it) && (!isStringOperator(*it)))
+			return 0;
         while (it != deque.end() && isStringDigit(*it)) {
             it++;
             count++;
@@ -77,14 +79,30 @@ void operate(std::deque<int>& numq, std::deque<char>& opq)
 		switch(op) {
 			case '+':
 				res = num2 + num1;
+				if ((num2 > 0 && num1 > 0 && res < 0) || (num2 < 0 && num1 < 0 && res > 0)) {
+					std::cout << "Error: overflow detected" << std::endl;
+					exit (-1);
+				}
 				break;
 			case '-':
 				res = num2 - num1;
+				if ((num2 > 0 && num1 < 0 && res < 0) || (num2 < 0 && num1 > 0 && res > 0)) {
+					std::cout << "Error: overflow detected" << std::endl;
+					exit (-1);
+				}
 				break;
 			case '*':
+				if (willOverflow(num2, num1)) {
+					std::cout << "Error: overflow detected" << std::endl;
+					exit (-1);
+				}
 				res = num2 * num1;
 				break;
 			case '/':
+				if (num1 == 0) {
+					std::cout << "Error: division by zero" << std::endl;
+					exit (-1);
+				}
 				res = num2 / num1;
 				break;
 		}
@@ -120,4 +138,17 @@ void printDequeInt(std::deque<int> deque)
     for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); *it++) {
         std::cout << "token = " << *it << std::endl;
     }
+}
+
+bool willOverflow(int num1, int num2)
+{
+    if (num1 > 0 && num2 > 0 && num1 > INT_MAX / num2)
+        return true;
+    if (num1 > 0 && num2 < 0 && num2 < INT_MIN / num1)
+        return true;
+    if (num1 < 0 && num2 > 0 && num1 < INT_MIN / num2)
+        return true;
+    if (num1 < 0 && num2 < 0 && num1 < INT_MAX / num2)
+        return true;
+    return false;
 }

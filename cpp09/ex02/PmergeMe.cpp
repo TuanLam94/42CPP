@@ -23,7 +23,7 @@ PmergeMeV& PmergeMeV::operator = (const PmergeMeV& rhs)
 		_vector = rhs._vector;
 		_odd = rhs._odd;
 	}
-		
+
 	return *this;
 }
 
@@ -414,26 +414,20 @@ int checkInput(char* input)
 
 	char* token = std::strtok(errorInput, " ");
 	while (token != NULL) {
-		if (!isPositiveInt(token)) {
-
+		if (!isPositiveInt(token))
 			return -1;
-		}
 		vector.push_back(std::strtoll(token, NULL, 10));
 		token = std::strtok(NULL, " ");
 	}
 
 	std::sort(vector.begin(), vector.end());
 	for (size_t i = 1; i < vector.size(); i++) {
-		if (vector[i] == vector[i - 1]) {
-
+		if (vector[i] == vector[i - 1])
 			return -2;
-		}
 	}
 
 	if (vector.size() <= 1)
-	{
 		return -3;
-	}
 	return 1;
 }
 
@@ -472,25 +466,3 @@ bool isPositiveInt(char* token)
 
 	return true;
 }
-
-// template class PmergeMe<std::vector<int> >;
-// template class PmergeMe<std::deque<int> >;
-
-// //UTILS
-// void printVector(std::vector<int> vector)
-// {
-//     std::cout << "\n=== VECTOR : ===\n";
-
-//     for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); *it++) {
-//         std::cout << "token = " << *it << std::endl;
-//     }
-// }
-
-// void printList(std::list<int> list)
-// {
-//     std::cout << "\n=== LIST : ===\n";
-
-//     for (std::list<int>::iterator it = list.begin(); it != list.end(); *it++) {
-//         std::cout << "token = " << *it << std::endl;
-//     }
-// }

@@ -32,46 +32,4 @@ std::string substringBeforeDelimiter(std::string& str, char delim);
 std::string substringAfterDelimiter(std::string& str, char delim);
 std::string trim(std::string str);
 
-
-// void printDateError(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
-// bool wrongInputDate(std::multimap<std::string, std::string>& dataMap, MapIterator& inputIter);
-// bool keyCheck(std::string& key);
-// double AbsDouble(double num);
-
-
 #endif
-
-// void printResult(MapIterator& inputIter, MapIterator& dataIter)
-// {
-// 	size_t pos = inputIter->first.find(" ");
-// 	std::string tempKey = inputIter->first.substr(pos + 1);
-
-// 	if (printErrors(inputIter->second))
-// 		return ;
-
-//     else if (whichDigitString(dataIter->second) == 0 && whichDigitString(inputIter->second) == 0) {				//is int
-//         long long dataInt = std::strtoll(dataIter->second.c_str(), NULL, 10);
-//         long long inputInt = std::strtoll(inputIter->second.c_str(), NULL, 10);
-//         long long res = dataInt * inputInt;
-
-// 		std::cout << tempKey;
-//         if (res > INT_MAX)
-//             std::cout << " Error: too large a number.\n";
-// 		else
-// 			std::cout << " => " << inputIter->second << " => " << res << std::endl;
-//     }
-
-//     else {																									//is float
-//         double dataDouble = std::strtod(dataIter->second.c_str(), NULL);
-//         double inputDouble = std::strtod(inputIter->second.c_str(), NULL);
-//         double res = dataDouble * inputDouble;
-
-// 		std::cout << tempKey;
-//         if (res > INT_MAX)
-//             std::cout << " Error: too large a number.\n";
-//         else if (whichDigitString(inputIter->second) == -1)
-//             std::cout << " " << inputIter->second << std::endl;
-// 		else
-// 			std::cout << " => " << inputIter->second << " => " << res << std::endl;
-//     }
-// }
